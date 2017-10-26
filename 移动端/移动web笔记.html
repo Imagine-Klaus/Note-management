@@ -1,0 +1,211 @@
+1 viewport：
+
+    定义 ：因为我们页面的加载顺序  需要让浏览器知道我么设置了viewport且viewport只在移动端识别
+
+    适配的方式：就是设置屏幕的宽度和viewport的宽度一样
+
+    1.width 定义viewport的宽度  有一个特殊的值  deivce-width  作用当前设备的宽度
+    2.initial-scale 默认的初始缩放比 设置1.0  和pc端页面的显示比例一致 一比一显示在移动端
+    3.user-scalable 是否允许用户自行缩放 1,0  yes,no  不允许
+    4.maximum-scale：最大缩放比，大于0的数字
+    5.minimum-scale：最小缩放比，大于0的数字
+
+   一般设置：<meta name="viewport" content="width:device-width,initial-scale=1.0,user-scalable=0 maximum-scale=1.0">
+    <!--行业通用的viewpoert设置-->
+
+  快捷方式打印viewport的设置：meta:vp
+
+2 流式布局
+
+    定义：用百分比设置宽度的布局称为流式布局。
+
+3 清除点击高亮效果
+
+   -webkit-tap-highlight-color:transparent;
+
+4 设置所有盒子以边框开始
+
+   -webkit-box-sizing:border-box;
+
+5 清除浏览器给input标签自带的样式
+
+   -webkit-appearance: none; <!--组件默认的样式空-->
+
+  input{
+       border:0;
+       outline:0;
+       resize:0;  <!--这个什么作用还不了解-->
+       -webkit-appearence:none;<!--这个如果不设置会有什么默认的样式？-->
+     }
+
+6  一般移动页面 最小宽度 和 最大宽度 的设置
+
+  <!--对京东内容(jd_layout) 总盒子中-->
+
+      min-width:300px <!--适配小屏幕设备，为了 保持布局的正确-->
+      max-width:640px <!--在行业当中设计图一般是640px。如果不限制那么图片就会被拉伸，页面的显示效果就会不好-->
+
+7  用form标签包裹搜索框input的作用：
+
+        <form action="">
+            <input type="search" placeholder="文字提示"/>
+        </form>
+
+     在移动端用小键盘这样的结 构能够让小键盘enter按钮改 变成搜索按钮
+
+8  头部搜索块没没办法直接实现居中功能<!--position:fixed-->
+
+   :因为fixed脱离标准文档流，其基准是以window为基准的
+
+   <!--Solution:-->
+      给整个需要定位的子容器套上一个盒子，然后设置最大宽度和最小宽度，给其居中。
+
+9  二倍图的必要性：两个物理像素占满一个px
+
+  <!--Solution:-->
+     如果是图片的话压缩1倍就可以解决
+     如果是背景图使用background-size来压缩；
+
+10  对父容器form和子元素input都设置width:100%
+
+    <!--Reason:-->
+    在对父容器的padding进行设置了之后 子容器的宽度100%是以父容器的内容决定的，这样就可以伸缩了。
+
+11 手机端可滑动+滚动轮播图
+
+   1.0 需要在头部加上最后一张图，在尾部加上第一张图片，不同于pc。
+
+   2.0 如果不对ul设置overflow:hidden在显示的时候会有左右的滚动条
+
+12 在使用rem的时候可以给body的font-size设置为62.5%，那么1.2em=12px,1.4rem=14px;等等
+
+13 单行文本溢出可以这么设置：
+
+     定义文本父元素框的宽度，width；
+
+     超出隐藏 overflow：hidden；
+
+     强制文本在一行显示white-space：nowrap；
+
+     溢出文本显示省略号 text-overflow:ellipsis
+
+   多行文本溢出(多用于详情页)：
+
+      display:-webkit-box;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      word-break:break-all;
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:2;
+
+14 tap 的点击穿透现象：
+
+   点透事件的当下层是click事件，然后上层是tap事件的时候，当点击上层，上层马上就消失了，然后过了300ms浏览器才会判定click事件响应，然后click事件也被触发了
+
+   <!--Solutions-->
+    1.0  使用缓动动画过渡300ms的延迟
+    2.0  中间dom元素的加入，让中间层接受这个“穿透”得事件，稍后隐藏；
+    3.0  “上下”都使用tap事件，原理上解决了tap穿透的事件
+    4.0  改用Fastclick库；
+
+15  touch事件
+
+    touchstart/touchmove这两个可以在事件中获取e.touches[0]
+
+    touches只要在页面上都可以获取到,不管有没有绑定touchstart事件。
+
+    touchend中没有touches，只有changeTouches，在谷歌浏览器模拟器会出现丢失事件的现象
+
+    获取开始触摸的位置(按下去时候的起点)：
+    var startX=e.touches[0].clientX
+    获取滑动时的位置(不断变化的值)：
+    var moveX=e.touches[0].clientX
+    移动的距离：
+    distance=moveX-startX
+
+16 秒转化为时分秒的转化方式：
+
+   var h = Math.floor(time/3600);
+   var m = Math.floor((time%3600)/60);
+   var s = time%60;
+
+17 当左边盒子浮动，右边盒子有文字的时候取消文字环绕方式(占满剩余宽度法)：
+
+   给右侧盒子加上overflow:hidden
+
+18 transitionEnd事件的使用
+
+
+   addEventListener('webkitTransitionEnd',function(){})
+
+19 对父元素绑定了tap事件后，通过e.target可以找到事件的触发源，可以达到 this 类似的作用
+
+20 运用媒体查询屏幕宽度
+
+  @media screen and (max-width){} <!--and后一定要加一个空格-->
+
+21 bootstrap
+
+
+   <!--1.0关于列类名-->
+        默认将.row类名一行分为12等分
+        加了row类名的元素可以去掉原本默认的15padding的值(会添加上-15的margin,从视觉效果上抵消了)
+        col-md-*:针对中等屏幕以上生效
+        col-lg-*:大屏幕以上生效。
+        col-sm-*:小屏幕及以上
+        col-xs-*:超小屏幕设备以上
+
+       <!--什么时候不加row?-->
+
+   <!--2.0 响应式工具-->
+        hidden-lg;
+        hidden-md;
+        hidden-ms;
+        hidden-xs;
+
+22 自定义字体图标 emmet语法：@f+
+
+23 要让两个图标同时垂直对齐时 需要两者都加上vertical-align:middle;
+
+24 背景图是无法做自适应的，需要用图片才能做适配。
+
+25 鼠标点击的时候出现样式 ：
+
+    例: li:focus{  }
+
+
+26 手机网站常用的布局方案整理：
+
+   1.0 流式布局
+       通过大量的百分比布局，只有少数几种尺寸的手机能够达到完美的效果
+       而且不够灵活。
+   2.0 固定宽度布局
+       限死屏幕宽度，其余部分留白，在大屏幕手机上就会有不好的视觉体验
+   3.0 响应式布局
+       媒体查询有限
+       工作大，维护难，一般中小型门户使用。
+   4.0 viewport缩放
+
+   5.0 rem等比例适配所有屏幕
+
+27 zepto 与 jquery的区别
+
+   最主要区别：
+   Jquery能够很好的兼容各种浏览器，而zepto却没有。
+   Jquery通常用于PC端，而zepto通常用于手机端。
+   zepto有触摸事件，而Jquery没有。
+   Jquery有模块化，而zepto没有。
+   zepto相比Jquery轻量级
+   1.0 zepto对象不能自定义事件。
+   2.0 Zepto 是根据标准浏览器写的，所以对于节点尺寸的方法只提供 width() 和 height()，省去了 innerWidth(), innerHeight(),outerWidth(),outerHeight()
+   3.0 Zepto 的each 方法只能遍历 数组，不能遍历JSON对象
+   4.0 jQuery 操作 ul 上的 id 不会被添加。
+   5.0 使用 jQuery 时 load 事件的处理函数不会执行
+
+
+
+
+
+
+
+

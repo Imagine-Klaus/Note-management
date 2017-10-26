@@ -1,0 +1,405 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:GNG笔记</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<h1 id="git">Git</h1>
+<h2 id="-git-">初始化Git仓储/(仓库)</h2>
+<ul>
+<li>这个仓库会存放，git对我们项目代码进行备份的文件</li>
+<li>在项目目录右键打开 git bash</li>
+<li>命令: <code>git init</code></li>
+</ul>
+<h2 id="-">自报家门</h2>
+<ul>
+<li>就是在git中设置当前使用的用户是谁</li>
+<li>每一次备份都会把当前备份者的信息存储起来</li>
+<li>命令: <ul>
+<li>配置用户名:<code>git config --global user.name &quot;xiaoming&quot;</code></li>
+<li>配置邮箱:  <code>git config --global user.email &quot;xm@sina.com&quot;</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="-git-">把代码存储到.git仓储中</h2>
+<ul>
+<li>1.把代码放到仓储的门口<ul>
+<li><code>git add ./readme.md</code> 所指定的文件放到大门口</li>
+<li><code>git add ./</code> 把所有的修改的文件添加到大门口</li>
+</ul>
+</li>
+<li>2.把仓储门口的代码放到里面的房间中去<ul>
+<li><code>git commit -m &quot;这是对这次添加的东西的说明&quot;</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="-">可以一次性把我们修改的代码放到房间里(版本库)</h2>
+<ul>
+<li><code>git commit --all -m &quot;一些说明&quot;</code><ul>
+<li>--all 表示是把所有修改的文件提交到版本库</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">查看当前的状态</h2>
+<ul>
+<li>可以用来查看当前代码有没有被放到仓储中去</li>
+<li>命令: <code>git status</code></li>
+</ul>
+<h2 id="git-">git中的忽略文件</h2>
+<ul>
+<li>命令:touch.gitignore 创建忽略文件</li>
+<li>.gitignore,在这个文件中可以设置要被忽略的文件或者目录。</li>
+<li>被忽略的文件不会被提交仓储里去.</li>
+<li>在.gitignore中可以书写要被忽略的文件的路径，以/开头，
+  一行写一个路径，这些路径所对应的文件都会被忽略，
+  不会被提交到仓储中<ul>
+<li>写法<ul>
+<li><code>/.idea</code> 会忽略.idea文件</li>
+<li><code>/js</code>      会忽略js目录里的所有文件</li>
+<li><code>/js/*.js</code> 会忽略js目录下所有js文件</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">查看日志</h2>
+<ul>
+<li><code>git log</code> 查看历史提交的日志</li>
+<li><code>git log --oneline</code> 可以看到简洁版的日志</li>
+</ul>
+<h2 id="-">回退到指定的版本</h2>
+<ul>
+<li><code>git reset --hard Head~0</code><ul>
+<li>表示回退到上一次代码提交时的状态</li>
+</ul>
+</li>
+<li><p><code>git reset --hard Head~1</code></p>
+<ul>
+<li>表示回退到上上次代码提交时的状态</li>
+</ul>
+</li>
+<li><p><code>git reset --hard [版本号]</code></p>
+<ul>
+<li>可以通过版本号精确的回退到某一次提交时的状态</li>
+</ul>
+</li>
+<li><p><code>git reflog</code></p>
+<ul>
+<li>可以看到每一次切换版本的记录:可以看到所有提交的版本号</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">分支</h2>
+<ul>
+<li>默认是有一个主分支master</li>
+</ul>
+<h2 id="-">创建分支</h2>
+<ul>
+<li><code>git branch dev</code><ul>
+<li>创建了一个dev分支</li>
+<li>在刚创建时dev分支里的东西和master分支里的东西是一样的</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">切换分支</h2>
+<ul>
+<li><code>git checkout dev</code><ul>
+<li>切换到指定的分支,这里的切换到名为dev的分支
+<code>git branch</code> 可以查看当前有哪些分支</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">合并分支</h2>
+<ul>
+<li><code>git merge dev</code><ul>
+<li>合并分支内容,把当前分支与指定的分支(dev),进行合并</li>
+<li>当前分支指的是<code>git branch</code>命令输出的前面有*号的分支</li>
+</ul>
+</li>
+<li>合并时如果有冲突，需要手动去处理，处理后还需要再提交一次.</li>
+</ul>
+<h2 id="github">GitHub</h2>
+<ul>
+<li><a href="https://github.com">https://github.com</a></li>
+<li>不是git,只是一个网站</li>
+<li>只不过这个网站提供了允许别通过git上传代码的功能</li>
+</ul>
+<h2 id="-github-git-">提交代码到github(当作git服务器来用)</h2>
+<ul>
+<li><p><code>git push [地址] master</code></p>
+<blockquote>
+<p>示例: <code>git push https://github.com/huoqishi/test112.git master  master</code><br>
+会把当前分支的内容上传到远程的master分支上</p>
+</blockquote>
+</li>
+<li><p><code>git pull [地址] master</code></p>
+<ul>
+<li>示例: <code>git pull https://github.com/huoqishi/test112.git master</code><blockquote>
+<p>会把远程分支的数据得到:(<em>注意本地-要初始一个仓储!</em>)</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p><code>git clone [地址]</code></p>
+<blockquote>
+<p>会得到远程仓储相同的数据,如果多次执行会覆盖本地内容。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="git-svn-">git和svn的区别</h2>
+<ul>
+<li>git：分布式版本控制系统；</li>
+<li>svn: 集中式版本控制系统；</li>
+</ul>
+<h2 id="ssh-">ssh方式上传代码</h2>
+<ul>
+<li>公钥 私钥,两者之间是有关联的。</li>
+<li>生成公钥,和私钥<ul>
+<li><code>ssh-keygen -t rsa -C &quot;xiaoming@sina.com&quot;</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="-push-pull-">在push和pull操作进</h2>
+<ul>
+<li><p>先pull , 再push</p>
+</li>
+<li><p>当我们在push时，加上-u参数，那么在下一次push时
+我们只需要写上<code>git push</code>就能上传我们的代码。(加上-u之后，git会把
+当前分支与远程的指定的分支进行关联。git push origin master)</p>
+</li>
+</ul>
+<h1 id="2-0-npm">2.0 npm</h1>
+<h2 id="npm">npm</h2>
+<ul>
+<li>node package manager</li>
+<li>管理项目的依赖包</li>
+<li>可以用来下载我们需要使用的东西</li>
+<li>安装后可以通过<code>npm -v</code> 查看版本</li>
+</ul>
+<h2 id="npm-">npm 使用</h2>
+<ul>
+<li>1.初始化操作<ul>
+<li><code>npm init</code> 会生成一个package.json文件</li>
+</ul>
+</li>
+<li><p>2.下载所需要的包</p>
+<ul>
+<li><code>npm install jquery</code>  下载jquery</li>
+<li>会去 registry.npmjs.org 这个地址下载jquery</li>
+<li>会生成一个node_modules目录，下载的内容就放在这个目录</li>
+</ul>
+</li>
+<li><p>3.下载包时，可以加上 <code>--save</code> 参数</p>
+<ul>
+<li><code>npm install jquery --save</code>, 下载之后会在package.json中添加
+当前下载的包的版本信息。</li>
+</ul>
+</li>
+</ul>
+<h2 id="npm-">npm 常用命令</h2>
+<ul>
+<li><p>less转换： </p>
+<ul>
+<li>//下面命令是安装less，注意一定要有-g，否则还得做些其他工作<br>
+   <strong>npm install less -g</strong></li>
+<li><p>//下面命令用于安装css压缩插件<br>
+<strong>npm install less-plugin-clean-css</strong>
+安装完成后就可以使用lessc的命令了</p>
+</li>
+<li><p>//下面命令编译less文件生成css <br>
+  lessc d:\styles.less d:\styles.css</p>
+</li>
+<li>//下面命令启用css压缩插件，生成压缩后的css文件 <br>
+  lessc d:\styles.less d:\styles.min.css -clean-css</li>
+</ul>
+</li>
+<li><p>md转带目录的html文件转换：</p>
+<ul>
+<li>第一步 npm install -g i5ting_toc //在npm命令窗口全局下载i5ting_toc</br></li>
+<li>第二步 在md文档路径下开启npm命令窗口，输入命令 <strong>i5ting_toc -f 文件名.md</strong>，就可以转换了</li>
+</ul>
+</li>
+</ul>
+<h1 id="3-0-gulp">3.0 gulp</h1>
+<h2 id="5-">5个核心方法</h2>
+<ul>
+<li>gulp.task(&#39;任务名&#39;,function(){}) // 创建任务。</li>
+<li>gulp.src(&#39;./*.css&#39;) 指定想要处理的文件</li>
+<li>gulp.dest() // 指定最终处理后的文件的存放路径</li>
+<li>gulp.watch() // 自动的监视文件的变化，然后执行相应任务。</li>
+<li>gulp.run(&#39;任务名&#39;)，直接执行相应的任务。</li>
+</ul>
+<h2 id="-gulp">安装gulp</h2>
+<ul>
+<li>通过npm安装:<code>npm install gulp-cli -g</code></li>
+</ul>
+<h2 id="gulp-">gulp使用</h2>
+<ul>
+<li>1.在当前项目中也要安装gulp: <code>npm install gulp --save</code></li>
+<li>2.还需要在当前项目中新建一个文件: gulpfile.js</li>
+</ul>
+<pre><code class="lang-javascript">    var gulp =  require(&#39;gulp&#39;);
+
+    // 创建任务
+    // 第一个参数: 任务名
+    // 第二个参数: 回调函数,当我们执行任务时就会执行这个函数
+    gulp.task(&#39;test&#39;, function(){
+      console.log(123)
+})
+</code></pre>
+<ul>
+<li>3.执行任务: <code>gulp 任务名</code><ul>
+<li>示例: <code>gulp test</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="-js-">对js进行压缩</h2>
+<ul>
+<li><code>npm install gulp-uglify --save</code></li>
+</ul>
+<h2 id="-js-">对js进行合并操作</h2>
+<ul>
+<li><code>npm install gulp-concat --save</code></li>
+</ul>
+<pre><code class="lang-javascript">    gulp.task(&#39;script&#39;, function(){
+  // 1.要匹配到要处理的文件
+  // 指定指定的文件:参数是匹配的规则
+  // 参数也可以是数组，数组中的元素就是匹配的规则
+  gulp.src([&#39;./app.js&#39;,&#39;./sign.js&#39;])
+  // concat 的参数是合并之后的文件名字
+  .pipe(concat(&#39;index.js&#39;))
+  .pipe(uglify())
+  // dest方法参数，指定输出文件的路径
+  .pipe(gulp.dest(&#39;./dist&#39;))
+})
+</code></pre>
+<h2 id="-css-">对css进行压缩操作</h2>
+<ul>
+<li><code>npm install gulp-cssnano --save</code></li>
+</ul>
+<pre><code class="lang-javascript">   // 新建一个任务，对css进行处理
+gulp.task(&#39;style&#39;, function(){
+  // 对项目中的2个css文件进行合并，压缩操作
+  // 1.匹配到要处理的文件
+  gulp.src([&#39;./*.css&#39;])
+  // 2.合并文件
+  .pipe(concat(&#39;index.css&#39;))
+  // 3.压缩操作
+  .pipe(cssnano())
+  // 4.输出到指定目录
+  .pipe(gulp.dest(&#39;./dist&#39;))
+  })
+</code></pre>
+<h2 id="-html-">对html进行压缩</h2>
+<ul>
+<li><code>npm install gulp-htmlmin --save</code></li>
+<li><a href="https://github.com/kangax/html-minifier">https://github.com/kangax/html-minifier</a></li>
+</ul>
+<pre><code class="lang-javascript">    // 新建一个任务，对html进行压缩
+gulp.task(&#39;html&#39;, function(){
+ // 1.匹配到要处理的文件
+ gulp.src([&#39;./index.html&#39;])
+ // 2.压缩操作
+ .pipe(htmlmin({collapseWhitespace:true}))
+ // 3.指定输出目录
+ .pipe(gulp.dest(&#39;./dist&#39;))
+})
+</code></pre>
+<h2 id="gulp-watch">gulp.watch</h2>
+<ul>
+<li>监视文件的变化，然后执行相应的任务</li>
+<li>gulp.run, 直接执行指定的任务</li>
+</ul>
+<pre><code class="lang-javascript">    // gulp.watch 监视文件变化，执行相应任务
+  gulp.task(&#39;mywatch&#39;, function(){
+  // 执行指定的任务
+  gulp.run(&#39;script&#39;)
+  // 1.监视js文件的变化，然后执行script任务
+  // 第一个参数：要监视的文件的规则
+  // 第二个参数：是要执行的任务
+  gulp.watch([&#39;./app.js&#39;,&#39;sign.js&#39;],[&#39;script&#39;])
+})
+</code></pre>
+
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>

@@ -1,0 +1,139 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:canvas笔记</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<p>[TOC]</p>
+<h2 id="canvas-">Canvas学习笔记</h2>
+<h3 id="1-">1.表格折线图插件</h3>
+<ul>
+<li><strong>echarts</strong> </li>
+</ul>
+<h3 id="2-">2. 虚线</h3>
+<blockquote>
+<p>1.0 ctx.setLineDash( 数组 )<br>
+2.0 ctx.getLineDash()<br>
+3.0 ctx.lineDashOffset = 值<br></p>
+</blockquote>
+<p><strong>注:</strong>数组中存储的数字就是分别表示 实线部分与空白部分的长度 [ 10 ]</p>
+<h3 id="3-">3. 绘制形状</h3>
+<pre><code>-&gt; 矩形
+    ctx.rect( x, y, width, heigth )     描边, 需要 stroke 或 fill
+    ctx.strokeRect( x, y, w, h )
+    ctx.fillRect( x, y, w, h )
+    ctx.clearRect( x, y, w, h )         清除该矩形区域的内容
+
+-&gt; 清除整个画布
+    ctx.clearRect( 0, 0, cas.width, cas.height );
+
+    cas.width = cas.width;
+
+-&gt; 圆弧
+    ctx.arc( x, y, r, startAngle, endAngle, clockwise )
+    ctx.arcTo() 了解
+</code></pre><h3 id="4-">4. 弧度制</h3>
+<ul>
+<li><p>转换为弧度</p>
+<pre><code>  function toRadian(angle){
+        return  angle*Math.PI/180;
+  }
+</code></pre></li>
+<li><p>转换为角度</p>
+<pre><code>  function toAngle(radian){
+         return radian*180/Math.PI
+  }        
+</code></pre></li>
+</ul>
+<h3 id="9-">9. 绘制文字</h3>
+<pre><code>ctx.fillText( 文本内容, x, y )
+ctx.strokeText( 文本内容, x, y );
+
+常用的属性
+ctx.font = &#39;30px 黑体&#39;
+
+ctx.textAlign       left, center, right.    start, end
+ctx.textBaseline    top, middle, bottom.    hanging, ideographics, alphabetic
+</code></pre>
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>

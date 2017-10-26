@@ -1,0 +1,365 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:Ajax学习笔记</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<h1 id="ajax-">Ajax学习笔记</h1>
+<h2 id="1-http-">1 http协议的请求方式</h2>
+<ul>
+<li>get ： 获取数据</li>
+<li>post  ：用来添加数据</li>
+<li>delete  ： 用来删除数据</li>
+<li>put  :用来修改数据</li>
+</ul>
+<ul>
+<li>HTTP协议
+ 即超文本传输协议，网站是基于HTTP协议的。
+ HTTP协议是由从客户机到服务器的请求(Request)和从服务器到客户机的响应(Response)进行了约束和规范。
+ 即HTTP协议主要由请求和响应构成。</li>
+</ul>
+<h2 id="2-http-">2 http请求</h2>
+<ul>
+<li><p>HTTP协议</p>
+<pre><code>  即超文本传输协议，网站是基于HTTP协议的。
+  HTTP协议是由从客户机到服务器的请求(Request)和从服务器到客户机的响应(Response)进行了约束和规范。
+  即HTTP协议主要由请求和响应构成。
+</code></pre></li>
+</ul>
+<ul>
+<li><p>HTTPS协议</p>
+<pre><code>  以安全为目标的HTTP通道，简单讲是HTTP的安全版。
+  即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。
+  SSL即安全套接层，是为网络通信提供安全及数据完整性的一种安全协议。
+</code></pre></li>
+<li><p>一般流程</p>
+<blockquote>
+<p>1.0 建立TCP连接 <br/>
+2.0 Web浏览器向Web服务器发送请求命令<br/>
+3.0 Web浏览器发送请求头信息<br/>
+4.0 Web服务器应答<br/>
+5.0 Web服务器发送应答头信息<br/>
+6.0 Web服务器向浏览器发送数据<br/>
+7.0 Web服务器关闭TCP连接     </p>
+</blockquote>
+</li>
+<li><p>一般由四部分组成</p>
+<blockquote>
+<p>1.0 HTTP请求的方法或者动作，是GET还是POST;<br/>
+2.0 正在请求的URL；<br/>
+3.0 请求头 包含客户端的信息，身份验证信息等等；<br/>
+4.0 请求体，请求正文，包含客户提交的查询字符串信息，表单信息等等  </p>
+</blockquote>
+</li>
+<li><p>HTTP响应一般由三部分组成</p>
+<blockquote>
+<p>1.0 一个数字或文字组成的状态码，用来显示请求失败或者成功；<br/></p>
+</blockquote>
+<pre><code>      状态码由三位数字构成，其中首尾数字定义了状态码的类型
+      1XX：信息类，表示收到了Web浏览器的请求正在进一步处理；
+      2XX：成功，表示用户请求被正确接受，理解和处理例如：200 OK；
+      3XX: 重定向，表示请求没有成功，客户必须采取进一步操作；
+      4XX：客户端错误，表示客户端提交的请求有错误，例如404 NOT；
+      5XX: 服务器错误，表示服务器不能完成对请求的操作 例如：500
+</code></pre></li>
+</ul>
+<blockquote>
+<p>2.0 响应头，包含服务器类型，日期时间，内容长度类型<br/>
+3.0 响应体， 相应正文</p>
+</blockquote>
+<ul>
+<li>常用HTTP状态码<ul>
+<li>200 ok :表示请求一切正常<br/></li>
+<li>301 Moved Permanently ：重定向，用户请求的文档在其他地方,新的URL在locatioin头中给出；<br/></li>
+<li>302 Found ：临时重定向，新的URL被视作临时性替代，不是永久性<br/></li>
+<li>304 Not Modified 客户端有缓冲的文档并发出了一个条件性的请求。服务器告诉客户，原来缓冲的文档还可以继续使用.<br/></li>
+<li>400 Bad Request 请求语法出现错误;<br/></li>
+<li>403 forbidden  资源不可用<br/></li>
+<li>404 Not Found :无法找到指定位置的资源<br/></li>
+<li>405 Method Not Allowed :请求方法对指定的资源不适用<br/></li>
+<li>500 Internal Server Error ：服务器发生了错误<br/></li>
+<li>501 Not Implemented :服务器不能满足需求<br/></li>
+</ul>
+</li>
+</ul>
+<h2 id="3-get-">3 get的用法</h2>
+<pre><code>        $f = $_GET[&quot;abc&quot;];
+        echo &#39;&lt;span&gt;&#39;.$f.&#39;&lt;/span&gt;&#39;
+</code></pre><ul>
+<li><strong>form表单的默认请求方式是get方式</strong></li>
+<li><strong>get请求会把表单的数据作为url的参数，对任何人都是可见的</strong></li>
+<li><strong>一般用于获取信息，一般在2000字符内</strong></li>
+</ul>
+<h2 id="4-post-">4 post的用法</h2>
+<ul>
+<li><strong>一般用于修改服务器上的资源，从表单中发送一些数据</strong>
+ <strong>在表单提交后</strong></li>
+</ul>
+<pre><code>        &lt;div&gt;
+            &lt;form action=&quot;./page-post.php&quot; method=&quot;post&quot; &gt;//此处method改为post方式传输数据
+            用户名：&lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br&gt;
+            密码    &lt;input type=&quot;text&quot; name=&quot;password&quot;&gt;&lt;br&gt;
+                    &lt;input type=&quot;submit&quot; value=&quot;登录&quot;&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+</code></pre><p>  <strong>提交后会跳转到验证页</strong></p>
+<pre><code>            &lt;?php
+                $username = $_POST[&#39;username&#39;];
+                $pw = $_POST[&#39;password&#39;]; 
+
+                header(&quot;Content-Type:text/plain; charset=utf-8&quot;);
+                if($username == &quot;admin&quot; &amp;&amp; $pw ==&quot;12345&quot;){
+                    echo &quot;用户名密码正确&quot;;  
+                }else{
+                    echo  &quot;用户名错误&quot;;
+                }
+            ?&gt;
+</code></pre><h2 id="5-php-">5 PHP遍历数组的方法</h2>
+<ul>
+<li><p>使用for循环</p>
+<pre><code>  $arr = array(1,2,3,4,5,6);
+  $length = count($arr);
+  for ($i = 0; $i &lt; $length; $i++) {  
+      echo $arr[$i].&quot;&lt;br&gt;&quot;;  
+  }  
+</code></pre></li>
+<li><p>使用foreach循环</p>
+<pre><code>  foreach($arr as $value){
+      echo $value;
+  }     
+</code></pre></li>
+</ul>
+<h2 id="5-iframe-">5 通过iframe方式可以在页面上实现局部刷新</h2>
+<p><strong>首先在主页面中写入</strong></p>
+<pre><code>       &lt;iframe width=&quot;0&quot; height=&quot;0&quot; frameborder=&quot;0&quot; name=&quot;myframe&quot;&gt;
+
+       &lt;/iframe&gt;
+</code></pre><p><strong>然后再iframe.php的子页面中写入</strong></p>
+<pre><code>    &lt;?php 
+
+    $username = $_POST[&#39;username&#39;];
+    $password = $_POST[&#39;password&#39;];
+    if ($username ==&#39;admin&#39; &amp;&amp; $password ==&#39;12345&#39;) {
+    ?&gt; 
+        &lt;script type=&quot;text/javascript&quot;&gt;
+        parent.document.getElementById(&quot;info&quot;).innerHTML=&quot;YES&quot;;
+        &lt;/script&gt;
+    &lt;?php } 
+    else{?&gt;
+
+    &lt;script type=&quot;text/javascript&quot;&gt;
+        parent.document.getElementById(&quot;info&quot;).innerHTML=&quot;NO&quot;;
+    &lt;/script&gt;
+
+    &lt;?php } ?&gt;
+</code></pre><blockquote>
+<p><strong>缺点：会为页面增加不必要的标签</strong></p>
+</blockquote>
+<h2 id="-ajax">那么咱来聊聊Ajax</h2>
+<ul>
+<li><p>ajax的请求过程是怎样的</p>
+<pre><code>  1.0 创建一个XMLHttpRequest对象
+  2.0 打开和服务器的链接
+  3.0 给服务器发送请求
+  4.0 通过onreadystatechange事件监听服务器的响应并执行回调函数
+</code></pre></li>
+<li><p>ajax返回回来的数据类型有哪些？</p>
+</li>
+</ul>
+<blockquote>
+<p>常用的数据类型有 <strong>JSON</strong>,<strong>XML</strong>,<strong>Text/HTML</strong>格式</p>
+</blockquote>
+<ul>
+<li><p>ajax的优点和缺点怎么说？</p>
+<pre><code>  优点：
+      1.0 能够实现页面的局部刷新；
+      2.0 更快的响应速度；
+      3.0 减轻服务器负担；
+      4.0 基于标准化并被广泛支持，无需使用多余插件；
+
+  缺点：
+      1.0 ajax不支持浏览器back按钮；
+      2.0 ajax暴露了与服务器的交互细节，有安全问题；
+      3.0 对搜索引擎的支持比较弱；
+      4.0 破坏了程序的异常机制；
+      5.0 不容易调试；    
+</code></pre></li>
+</ul>
+<h2 id="-xml-">关于XML格式</h2>
+<p><strong>什么是XML</strong></p>
+<pre><code>        1、XML指可扩展的标记语言
+        2、主要用来输出和存储数据 --- 注意：设置宗旨是【传输数据】，而非显示数据
+        3、XML标签没有预定义，需要自行定义标签 --- 就是说XML具有自我描述性
+</code></pre><p><strong>XML数据格式的缺点</strong></p>
+<pre><code>        1、原数据占用的数据量比较大，不利于大量数据的网络传输
+        2、解析不太方便
+</code></pre><p><strong>XML与html的区别</strong></p>
+<pre><code>        html是用于显示数据的，而XML是用来传输数据的
+</code></pre><h2 id="-json-">关于json你要知道</h2>
+<ul>
+<li><p>JSON相比XML</p>
+<pre><code>      更轻量级，更易解析，更快、
+</code></pre></li>
+<li><p>JSON数据解析</p>
+<blockquote>
+<p>JSON数据在传输的过程中是以文本即字符串的方式进行解析的，所以在js中使用时通常要转化为对象格式以便使用</p>
+</blockquote>
+</li>
+<li><p>转换的方式</p>
+<pre><code>       JSON.parse()         --- 把json形式的字符串转成对象
+       JSON.stringify()   --- 把对象转成字符串
+       var obj = eval(‘(’ + str1 + ‘)’)             --- 把字符串解析成JS代码并执行
+</code></pre></li>
+</ul>
+<h2 id="-">关于跨域</h2>
+<ul>
+<li><p>什么情况下会跨域</p>
+<pre><code>      1.0 网络协议不同，如http协议访问https协议。
+      2.0 端口不同，如80端口访问8080端口。
+      3.0 域名不同，如qianduanblog.com访问baidu.com。
+</code></pre></li>
+</ul>
+<blockquote>
+<p>浏览器有个策略叫----&quot;<strong>同源策略</strong>&quot;。所谓同源策略,就是同协议，同域名，同端口，是浏览器保护用户信息安全的一种手段，它对来至不同源的文档或脚本对当当前文档的读写做出了限制</p>
+</blockquote>
+<ul>
+<li>实现跨域的原理 ： </li>
+</ul>
+<blockquote>
+<p><strong>实现跨域都是把动态资源伪装成脚本来实现跨域</strong></p>
+</blockquote>
+<ul>
+<li><p>实现跨域的方法 :</p>
+<pre><code>  1、jsonp，
+  2、document.domain + iframe
+  3、location.hash + iframe
+  4、window.name + iframe
+  5、window.postMessage
+  6、flash 等第三方插件 
+</code></pre></li>
+</ul>
+<h2 id="jsonp-">Jsonp的基本原理</h2>
+<ul>
+<li><p>利用script的特性(可以把引用过来的内容当做js代码执行)<strong>动态创建</strong>scirpt，通过src使用<strong>get</strong>的请求方式向服务端发送跨域请求，通过响应的内容调用事先定义好的方法。</p>
+<pre><code>  优点：可以让我们越过浏览器的同源策略发送请求；
+  缺点：必须后台配合你开发出jsonp结口
+</code></pre></li>
+<li><p><strong>Jsonp与ajax的区别</strong>：</p>
+<pre><code>  首先ajax的核心是通过XMLHttpRequest获取非本网页内容；
+  json呢，是一种数据交换的格式，js原生支持，后台几乎全部支持；
+  jsonp呢，是基于浏览器同源策略下进行跨域的一种调用方式  
+</code></pre></li>
+</ul>
+<h2 id="arttemplate-">artTemplate使用</h2>
+<h3 id="-">编写模板</h3>
+<ul>
+<li><p>使用一个<strong>type = &quot;text/html&quot;</strong>的script的标签来存放模板</p>
+<pre><code>  例如:&lt;script type=&quot;text/html&quot; id=&quot;template&quot;&gt;
+          &lt;h1&gt;{{title}}&lt;/h1&gt;
+          {{each books as value}}
+          &lt;div&gt;
+              {{value}}
+          &lt;/div&gt;
+          {{/each}}         
+
+      &lt;/script&gt;  
+</code></pre></li>
+</ul>
+<h3 id="-">渲染模板</h3>
+<ul>
+<li><p>template(&quot;id&quot;,数据)</p>
+<pre><code>          var  data= {
+          title:&quot;书名&quot;,
+          books:[&quot;三国演义&quot;,&quot;水浒传&quot;,&quot;西游记&quot;]
+          }
+
+      //添加数据后渲染
+      var html = template(&quot;template&quot;,data);
+      var container = document.getElementById(&quot;container&quot;)
+      container.innerHTML=html;
+</code></pre></li>
+</ul>
+<h2 id="-">时间戳学习</h2>
+
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>
