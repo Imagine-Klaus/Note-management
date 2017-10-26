@@ -1,0 +1,251 @@
+  document.createElement("ul")   创建元素(加引号)
+  father.appendChild(移动的节点): 追加子节点 
+  father.insertBefore(移动的节点,son): 插入到前面 
+  father.removeChild(son): 移除子节点
+<!--   var clone = son.cloneNode(true)  克隆出来的子节点
+  father.appendChild(clone)   克隆的节点需要添加    -->
+
+<!-- html中添加内容 -->
+  innerHTML  符合标签规则的文本会变成标签
+  innerText   符合标签的也是文本
+  textContent   同上
+
+<!-- 获取节点  获取节点  获取节点-->
+node : 元素
+Sibling : 节点
+  .childNodes(伪数组)  所有的子节点
+  .parentNode          唯一的父元素
+  .firstChild   .lastChild   子节点
+  .nextSibling  .previousSibling  兄弟节点
+<!-- 获取元素  需要封装  需要封装-->
+  元素节点就是标签!!!
+  xx.children(伪数组)  子元素
+  xx.parentNode(唯一)  父元素
+  xx.firstElementChild  xx.lastElementChild   第一个子元素
+  xx.nextElementSibling   xx.previoustElementSibling  兄弟元素
+
+<!-- 获取添加删除属性 -->
+  xx.getAttribute("id")          获取
+  xx.setAttribute("index", "2")  设置
+  xx.removeAttribute("id")       移除
+
+<!-- 鼠标键盘事件 -->
+  event.keycode 键盘码
+  onmouseup 鼠标弹起
+  onmousedown 鼠标按下
+  onmouseover 鼠标经过
+  onmouseout 鼠标离开 // onmouseleave(不兼容,阻止向上冒泡)
+  onblur 失去焦点
+  onfocus 获取焦点
+  onkeypress 键盘按压 
+  onkeyup 键盘弹起事件  
+  onkeydown 键盘按下事件
+  ondblclick 鼠标双击
+  onclick  鼠标单击
+  onresize 事件会在窗口或框架被调整大小时发生
+  onscroll 滚动条滚动事件
+  oninput 在输入的时候执行
+  onchange 失去焦点后如果表单元素的内容发生了改变 这个时候就会执行
+  ontimeupdate 时间更新时会触发 
+  ondragstart  开始拖放元素的时候会触发(先)
+  ondragover  在可拖动元素或选取的文本正在拖动到放置目标时触发(中)
+  ondrop(不是ondrag)      拖放元素丢到容器内会触发(后)
+
+  鼠标在页面上移动: 
+  document.onmousemove
+
+
+<!-- DOM   01 注释的可能是懂了的,并非不重要-->
+  DOM---文档对象模型(Document Object Model)
+<!-- 事件绑定的时候,事件处理程序执行吗? 不执行  事件被触发的时候才执行 -->
+  function里面需要再次for循环,不能用function外面的遍历
+<!-- 注册事件: 获取img标签 然后 控制他的src属性-->
+<!-- 专门用来操作任何标签属性的方法: -->
+<!-- getElementById只能被document调用,获取的是一个id名为demo的元素
+getElementsByTagName能被普通DOM对象调用,获取的是若干元素的集合：伪数组
+能够使用操作数组的方式，使用索引值把集合中的元素取出来,切忌在事件执行程序中使用循环索引 “i”-->
+
+<!-- 阻止浏览器默认行为 -->
+  在标签行内属性中设置：return false
+<!--   禁用文本框 -->
+  xx.disabled = true ||  xx.disabled = "disabled"
+<!-- 点击按钮选中D选项 -->
+  xx.selected = true ||  xx.checked = true
+
+引用类型做参数:
+规律总结:有new就在堆里面创造新的对象,形参p和实参p一般情况不同
+
+前面加new关键字(当一个函数被作为构造函数使用时)
+  1.创建出来一个空对象
+  2.把this指向这个空对象
+  3.在函数运行完成后 隐式的把this返回
+
+console.dir  以对象的形式展示属性
+str instanceof Array    判断Array里面是否有str 
+
+
+封装问题:
+替换类名方法的封装:
+使用：replace方法,替换后返回新的字符串
+  function replaceC lassName(ele, oldStr, newStr) {
+    ele.className = ele.className.replace(oldStr，newStr);
+  }
+
+用if检测浏览器支持的属性
+  如果一个对象有某个属性 获取到的值是string
+  如果一个对象没有某个属性 获取到的值是undefined
+<!-- if (typeof box.innerText === "string") {
+        console.log(box.innerText);
+} else {
+        console.log(box.textContent);
+  } -->
+
+
+
+<!-- DOM   02 -->
+innerHTML "获取内部的html",会把原内容清空
+解决办法:  1.innerHTML += '<li class="txt"><li>' <!--用单双引号交替--> 2.用appendChild 追加子节点   insertBefore 插入子节点前面
+
+innerText textContent "获取内部的文本内容,html标签会被忽略",会把原内容清空
+(!兼容问题,需封装 兼容问题,需封装 兼容问题,需封装 兼容问题,需封装!)
+<!-- textContent(火狐) 作用同innerText(IE支持) -->
+<!-- box.innerHTML = "<h1>title</h1>";如果是符合标签规则的文本会变成标签
+box.innerText = "<h1>title</h1>"	;即使是符合标签规则的文本会变成纯文本 -->
+
+<!-- 标签的自定义属性: -->
+控制台打印自定义属性
+原始:<div id = "box" index="1" class="2"></div></div>
+  1. console.log(box.className) = "2"   || 2.console.log(box.index) = "undefinded"
+  3. 添加box.title = "3"  转变<div ... title="3"></div>
+  4. 添加box.c = "4" 未变,法映射到标签上
+解决办法:
+  xx.getAttribute("id")          获取
+  xx.setAttribute("index", "2")  设置
+  xx.removeAttribute("id")       移除
+<!-- 标准中有规定的属性,对象中属性的设置会改变标签 -->
+<!--  标准中没有规定的属性,对象中属性的设置无法映射到标签上 -->
+
+
+<!-- DOM    03 -->
+<!-- node : 元素 -->
+<!-- Sibling : 节点 -->
+节点:元素节点1(标签)   文本节点3    注释节点8    属性节点2
+判断节点类型: xx.nodeType === 1(3,8,2)  
+
+console.log(xx.nodeType)   判断元素节点
+console.log(xx.nodeValue)  打印节点的值
+console.log(xx.nodeName)   获取节点名称<!-- #text #comment-->
+(不会用)  获取属性节点:  getAttributeNode() 
+
+子节点: xx.childNodes 包含任意节点,是伪数组,需要遍历取出单个节点(不包括ul里面的li) 
+子元素节点(标签): xx.children  
+通过children获取的是伪数组,而不是元素,不能children.className = "xx"
+解决方法: children[0].className = "xxx";
+getNextElement(this).innerHTML = "密码必须在3-6位之间";
+
+连写:var inputs = document.getElementById("box").getElementsByTagName("input");
+
+style只能获取和设置行内样式,style属性是对象，style对象的属性是字符串
+ box.style.left = "200px";
+ box.style.top = "200px";
+ 注意:盒子必须要绝对定位或固定定位
+
+
+<!-- DOM    04 -->
+<!-- father 是父级元素  son  子元素 参考节点-->
+document.createElement("ul")   创建元素  
+<!--只能被document调用  但可以用appendChild添加到ul等元素中 -->
+father.appendChild(移动的节点): 追加子节点 
+<!-- 把一个节点放到父节点内部的最后 -->
+father.insertBefore(移动的节点,son): 插入到前面 
+father.removeChild(son): 移除子节点
+<!-- 如果是页面上原有的节点 会被从原来的位置上揪下来 放到新的位置 -->
+var clone = son.cloneNode(true)  克隆出来的子节点
+father.appendChild(clone)   克隆的节点需要添加  <!--包含son的子元素--><!-- 克隆出来的节点 和 原来的节点 互不影响 -->
+<!-- var clone = demo.cloneNode(false)  仅克隆demo,不复制demo子级内容 -->
+
+<!-- 将内容加到DOM中 -->
+效率问题:
+  1. 拼接字符串(消耗内存)
+  2. 把字符串变成DOM对象
+  3. 把DOM放在DOM树上(插入页面中)
+  4. DOM渲染(渲染整个页面)
+解决办法
+( 一次性拼接 )
+  a. var arr = [];<!-- 创建 数组 -->
+  b. arr.push("<li>111</li>");<!-- 把字符串添加到数组中 -->
+  c. box.innerHTML = arr.join("");<!--一次性拼接字符串join("")-->
+( 创建标签 )
+<!-- a.创建元素   b. 直接在页面中添加ul,li  c.在li中添加文本-->
+for (var i = 0; i < 1000; i++) {
+    var ul = document.createElement("ul");
+    box.appendChild(ul);
+    var li = document.createElement("li");
+    li.innerHTML = "111";
+    ul.appendChild(li); 
+}
+
+<!-- 百度搜索indexOf方法 -->
+str.indexOf("d")   判断str是否有d 返回索引值(DOM5,18)
+例:var str = "abcd";
+   console.log(str.indexOf("abc"))  0
+   console.log(str.indexOf("f"))  找不到返回-1
+   console.log(str.indexOf(""))   0 可以理解为这个字符串是以""开头的
+
+trim方法去除两端空格
+  txt.value.trim() === ""
+
+li标签先来后到(微博新发布的li在最上面)
+  ul.insertBefore(li,lis[0])
+
+getelementsbyClassName("close")[0] 通过类名获取元素
+<!-- 注意:closed,closes都能获取?? -->
+
+百度输入法步骤:
+1.用户键盘弹起  .onkeyup
+2.从datas中找和 用户输入 的相同内容 如果没有 放到一个新数组arr中   datas[i].indexOf(text.value) === 0  filterArr.push
+3.动态生成结构  div - ul -for:li -innerText(arr遍历中的数据)   .createElement  .appendChild
+4.判断div是否创建
+  4.1如果存在div 删除之前的div  .removeChild
+  4.2如果没有匹配项 就不创建了  filterArr.length === 0    return
+  4.3如果用户输入为空 也不创建了  value === ""
+  <!-- BOM    01 -->
+
+顶级对象:所有没表明的属性都属于window
+窗口事件:windows.onload = function () {}
+ <!--  就是一个事件 触发的条件是整个资源加载完自动触发 -->
+打开窗口:window.open()
+  <!-- window.open("http://www.baidu.com", "_blank") 在新的空白窗口打开
+  window.open("http://www.baidu.com", "_self") 在当前窗口打开 -->
+关闭当前窗口:window.close()   xx.close() 关闭指定对象
+
+延时定时器(搭配按钮):<!--清除延时:clearTimeout(timerId)-->
+  var timerId = setTimeout(function(){......} , 3000 ); 3000毫秒 = 3秒
+间歇定时器(做动画):
+  var timerId = setInterval(function () {console.log("一直执行")}, 1000);
+清除间歇定时器:   
+  clearInterval(timer); 
+
+location对象(window.location):
+  location.href = "网址"  当前网址栏转到其他网址
+  <!-- 原理:在地址栏里输入地址 -->
+
+
+<!-- BOM  02 -->
+计算浏览器消耗时间:
+  var start = +new Date();
+  var end = +new Date();
+  console.log(end - start);
+
+new Date()  创建日期对象,在控制台以字符串形式展现
++new Date()  从1970-1-1到现在所过去的毫秒数
+
+var date = new Date()
+不传参数得到的是当前时间
+var date = new Date(2005,10,1)
+传参数得到的是输入的时间转换的毫秒值
+
+
+charAt()  获取指定位置处字符
+valueOf() 方法可返回 Boolean Array 对象的原始值。
+valueOf() 方法可以使字符串返回数字
