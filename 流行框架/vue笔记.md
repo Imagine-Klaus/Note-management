@@ -916,3 +916,34 @@ new Vue({
 
 <h4>8.destroy</h4>
 > Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。 该钩子在服务器端渲染期间不被调用。
+
+
+## 脚手架安装
+
+<h4>一、安装vue-cli</h4>
+
+> 前提 安装好 `node` 和 `npm`
+
+- 在命令行输入
+`npm install vue-cli -g`
+
+- 安装完成后可以通过`vue -V`查看版本号
+
+<h4>二、初始化项目</h4>
+
+- 命令`vue init <template-name> <project-name >`
+> `init` :表示要用vue-cli初始化项目<br>
+> `<tempalte-name>`:表示模板名称 ：总共五套常用模板
+- 1.webpack:
+> 一个全面的webpack+vue-loader的模板，功能包括热加载，linting,检测和CSS扩展。
+- 2.webpack-simple
+> 一个简单webpack+vue-loader的模板，不包含其他功能，让你快速的搭建vue的开发环境。
+- 3.browserify
+> 一个全面的Browserify+vueify 的模板，功能包括热加载，linting,单元检测。
+
+- 4.browserify-simple
+> 一个简单Browserify+vueify的模板，不包含其他功能，让你快速的搭建vue的开发环境。
+- 5.simple
+> 一个最简单的单页应用模板。
+
+然后输入命令`vue-inti webpack vueliTest`
