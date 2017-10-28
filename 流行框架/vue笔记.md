@@ -770,6 +770,9 @@ getDom:function(){
 
 ### 路由的传参
 
+#### 1 路由传参第一种
+> 通过在配置路由中绑定参数名` path: '/login/:username'` 然后在`<router-link to="/login/Rose">`**(最后一个/后的数值既为要传递过去的数值)**,然后在目标页通过` $route.params.username(自己定义的参数名)`可以获取到传递过来的值
+
 ```html
 <body>
     <div id="app">
@@ -805,6 +808,11 @@ getDom:function(){
         routes: [ //途径数组
             {
                 path: '/login/:username',  // :username 为路由获取时的参数名
+                /* 在传递参数的时候可以对username的值进行正则匹配
+                例如
+                    path: '/login/:username(\\s+)'
+                */
+                
                 component: login //此处不需要加引号'' 
             },
             {
@@ -821,6 +829,68 @@ getDom:function(){
 </body>
 
 ```
+#### 2 路由传参第二种
+- 路由设置`name`属性
+> `{ path:'Hi2',name:'Hi2',component:Hi2 }`<br/>
+研究发现当通过name属性绑定了路由之后`path`属性可以设定任意值也可以通向目标页面
+
+- `<router-link :to="{name:'Hi2',params:{username:'lll'}}">`
+
+- 在目标页面同样可以通过`$route.params.username`获取到传递过来的数值
+
+### 路由的重定向
+- 1. 使用`redirect`重定向
+> 以下实例：当Url中地址变为 “/hi3”是会重定向到"/"路由的页面 **注意：url路径中会变成/lll** `http://localhost:8080/#/`
+```js
+    routes:[
+            {
+            path:'/',
+            redirect:'/lll'                
+            /* 将原来component位置替换成redirect就可以了 */
+            } 
+    ]
+```
+
+- 2. 使用`alias`重定向
+> 以下实例：当Url中地址变成”/hi2“的时候会重定向到路由为`/lll`的页面<br/>
+**注意：url中的地址还是path定义的地址不是重定向后的地址**<br/>
+`http://localhost:8080/#/hi2`
+```js
+    {
+        path:'/hi2',
+        component:demo1,
+        alias:'/lll'
+    },
+```   
+> 在使用`alias`别名的时候 `path`不能写为`“/”`一个斜杠 **会出错**
+
+### mode的设置和404页面的处理
+- `mode`属性的两个值
+    + `mode:'history'` 设置为这个时候url地址栏不会出现"#"
+    + `mode:'hash'` 默认设置 有"#"出现在url地址栏
+```js
+export default new Router({
+  mode:'history', //和 routes同级
+  routes: [
+    {
+      path: '/',
+      components:{
+         default:HelloWorld,
+         left:demo1,
+         right:demo2
+      }
+    }
+  ]
+})
+``` 
+- 当用户输入一个匹配不到的页面的时候返回一个404页面
+    + 需要给`path`设置为`path:'*'`
+> 同样需要输入路由配置文件
+```js
+    path:'*',  //找不到页面时候的配置
+    component:Error  /* 需要定义一个显示 404 页面的提醒组件 */
+```
+
 
 ## 监听值的变化
 
@@ -946,4 +1016,43 @@ new Vue({
 - 5.simple
 > 一个最简单的单页应用模板。
 
-然后输入命令`vue-inti webpack vueliTest`
+然后输入命令`vue init webpack vueliTest`
+
+<h4>三、项目完成打包</h4>
+> 运行`npm run build`
+
+
+## 单页面多路由操作 
+- 首先需要在app.vue中的`<router-view>`下面再两个`<router-view>`
+```html
+    <router-view name="left" class="left"></router-view>
+    <router-view name="right" class="right"></router-view>    
+    <!-- name 属性的值与路由参数中配置的组件一一对应 -->
+```
+- 配置主要在`index.js` 中的 `routes` 字段中
+```js
+        /* 首先需要导入所需要用到的组件 */
+        import HelloWorld from '@/components/HelloWorld'
+        import demo1 from '@/components/demo1'
+        import demo2 from '@/components/demo2'
+        
+```
+- 依然在`index.js`中
+```js
+        export default new Router({
+            routes:[
+                {
+                    path:'/',
+                    components:{
+                        default:HelloWorld,
+                        left:demo1,
+                        right:demo2
+                    }
+                    //默认的微helloWorld组件
+                    //name=“left”为demo1组件
+                    //name="right"为demo2组件
+                }
+            ]
+        })
+```
+
