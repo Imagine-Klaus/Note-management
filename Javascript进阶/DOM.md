@@ -1,0 +1,233 @@
+# DOM
+
+## 1.基本概念
+
+DOM Document Object Model 文档对象模型
+就是把HTML文档模型化，当作对象来处理
+DOM提供的一系列属性和方法可以视作一个工具箱，极大地方便了我们对文档的处理。
+
+### 1.1 DOM涵盖的内容
+
+文档(Document)：就是指HTML或者XML文件
+
+节点(Node)：HTML文档中的所有内容都可以称之为节点，常见的节点有
+
+元素节点 属性节点 文本节点 注释节点
+
+元素(Element)：HTML文档中的标签可以称为元素
+
+### 1.2 节点结构概念
+
+父节点 当前节点的父级
+
+子节点 当前节点的子级
+
+兄弟节点 和当前节点同属一个父级的节点
+
+## 2.查找元素
+
+### 2.1 getElementById
+
+getElementById()方法，接受一个参数：获取元素的 ID。如果找到相应的元素则返回该
+元素的 HTMLDivElement 对象，如果不存在，则返回 null
+
+```js
+document.getElementById('box'); //获取 id 为 box 的元素节点
+```
+
+id 表示一个元素节点的唯一性，不能同时给两个或以上的元素节点创建同一个命
+名的 id
+
+### 2.2 getElementsByTagName
+
+getElementsByTagName()方法将返回一个对象数组 HTMLCollection(NodeList)，这个数
+组保存着所有相同元素名的节点列表
+
+```js
+document.getElementsByTagName('*'); //获取所有元素
+
+document.getElementsByTagName('li'); //获取所有 li 元素，返回数组
+```
+
+### 2.3 getElementsByName
+
+getElementsByName()方法可以获取相同名称(name)的元素，返回一个对象数组
+HTMLCollection(NodeList)
+
+```js
+document.getElementsByName('add') //获取name属性值为add的 表单 元素
+```
+
+## 3.常用属性
+
+- tagName 获取元素节点的标签名
+
+- innerHTML 获取或设置元素节点里的内容
+
+- innerText(旧版FF不支持) 获取或设置元素节点里的文本
+
+- textContent(旧版IE不支持) 获取或设置元素节点里的文本
+
+- id 元素节点的 id 名称
+
+- title 元素节点的 title 属性值
+
+- style CSS 内联样式属性值
+
+- className CSS 元素的类
+
+## 4.节点
+
+### 4.1 node 节点属性
+
+节点可以分为元素节点、属性节点和文本节点，而这些节点又有三个非常有用的属性 ，分别为：nodeName、nodeType 和 nodeValue
+
+元素： nodeName=元素名称 nodeType=1 nodeValue=null
+
+属性： nodeName=属性名称 nodeType=2 nodeValue=属性值
+
+文本： nodeName=#text nodeType=3 nodeValue=文本内容(不包含 html)
+
+### 4.2 层次节点属性
+
+节点的层次结构可以划分为：父节点与子节点、兄弟节点这两种。当我们获取其中一个元素节点的时候，就可以使用层次节点属性来获取它相关层次的节点
+
+- childNodes 子节点，包括元素节点和文本节点
+
+- children 子元素，只包含元素节点
+
+    ```html
+    <div id="box">
+        aaaa
+        <p></p>
+        bbbb
+    </div>
+    ```
+    ```js
+    console.log(document.getElementById('box').childNodes.length); //3
+
+    console.log(document.getElementById('box').children.length); //1
+    ```
+
+- nextSibling 下一个兄弟节点
+
+- nextElementSibling 下一个兄弟元素 有兼容性问题
+
+- previousSibling 上一个兄弟节点
+
+- previousElementSibling 上一个兄弟元素 有兼容性问题
+
+- firstChild 第一个节点
+
+- firstElementChild 第一个子元素 有兼容性问题
+
+- lastChild 最后一个子节点
+
+- lastElementChild 最后一个子元素 有兼容性问题
+
+- parentNode 父节点
+
+## 5.样式属性
+
+style属性是对象，style对象的属性是字符串
+
+style只能获取和设置行内样式
+
+### 5.1 设置和获取样式
+
+- 通过对象的style属性只能设置和获取行内样式
+
+- 获取样式的时候 如果行内没有该样式 输出空字符串
+
+- 设置样式的时候 赋的值是一个字符串 如果这个属性有单位 一定要加单位
+
+### 5.2 什么情况通过class控制样式 什么情况通过style控制样式
+
+- 不严格的说：
+
+    如果样式很多 通过 直接控制类名 的方式加样式
+
+    如果样式比较少 通过直接设置比较方便
+
+- 严格来说：
+
+    从标准的角度讲 即使是样式比较少的时候 设置样式也要用类名
+
+    但是有一类情况 是无论如何也必须直接通过JS加的 那就是涉及到计算的时候
+
+## 6.常用表单属性
+
+- type可以设置input元素的类型
+
+- value可以设置input元素的值
+
+- checked可以设置input元素是否选中
+
+- selected 可以设置下拉列表select中的option是否被选中
+
+- disabled 可以设置input元素是否被禁用
+
+## 7.自定义属性
+
+### 7.1 DOM对象的自定义属性
+
+可以像给对象设置属性一样，给元素对象设置属性
+
+    元素对象.属性名 = “属性值”;
+
+    元素对象[属性名字符串] = “属性值”;
+
+### 7.2 标签的自定义属性
+
+可以通过getAttribute()和setAttribute()设置和获取标签属性，通过removeAttribute()移除标签的属性
+
+正常浏览器中 HTML中有规定的属性 两种方式才可以相互设置和获取
+
+>总之用setAttribute设置的就用getAttribute获取 用对象的自定义属性设置的就用对象的自定义属性获取 以免出问题
+
+## 8.节点操作
+
+- write() 这个方法可以把任意字符串插入到文档中
+    ```js
+    document.write('<p>这是一个段落！</p>')';
+    ```
+
+- createElement() 创建一个元素节点
+    ```js
+    document.createElement('p');    
+    ```
+
+- appendChild() 将新节点追加到子节点列表的末尾
+    ```js
+    var box = document.getElementById('box'); //获取某一个元素节点
+    var p = document.createElement('p'); //创建一个新元素节点<p>
+    box.appendChild(p); //把新元素节点<p>添加子节点末尾
+    ```
+
+- createTextNode() 创建一个文本节点
+    ```js
+    var text = document.createTextNode('段落'); //创建一个文本节点
+    p.appendChild(text); //将文本节点添加到子节点末尾
+    ```
+
+- insertBefore() 将新节点插入在前面
+    ```js
+    box.parentNode.insertBefore(p, box); //把<div>之前创建一个节点
+    ```
+
+- repalceChild() 将新节点替换旧节点
+    ```js
+    box.parentNode.replaceChild(p,box);
+    ```
+
+- cloneNode() 复制节点
+    ```js
+    var box = document.getElementById('box');
+    var clone = box.firstChild.cloneNode(true); //获取第一个子节点，true 表示复制内容
+    box.appendChild(clone); //添加到子节点列表末尾
+    ```
+
+- removeChild() 移除节点
+    ```js
+    box.parentNode.removeChild(box); //删除指定节点
+    ```

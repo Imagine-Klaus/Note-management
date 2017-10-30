@@ -38,9 +38,13 @@
 
 ### 1.3 常见的浏览器内核有哪些？
 + **Trident内核**：IE,MaxThon,TT,The World,360,搜狗浏览器等。[又称MSHTML]
+    + 前缀 `-ms`
 + **Gecko内核**：Netscape6及以上版本，FF,MozillaSuite/SeaMonkey等。
+    + 前缀 `-moz`
 + **Presto内核**：Opera7及以上。      [Opera内核原为：Presto，现为：Blink;]
+    + 前缀 `-o`
 + **Webkit内核**：Safari,Chrome等。   [ Chrome的：Blink（WebKit的分支）]
+    + 前缀 `-webkit`
 + **EdgeHTML内核**：Microsoft Edge。  [此内核其实是从MSHTML fork而来，删掉了几乎所有的IE私有特性]
 
 ### 1.4 简述一下你对HTML语义化的理解。

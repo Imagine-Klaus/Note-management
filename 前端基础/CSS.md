@@ -115,6 +115,8 @@
 - 设置文本或者元素水平位置
     + 只对**行内块元素/行内元素水平位置**有用，对块状元素不起作用。(input是行内元素)
 
+## `vertical-align`
+> `vertical-align`只对`inline-block`和`inline`元素起作用
 ## margin的应用
 - `margin：0 auto` 可以让拥有宽度的元素根据父元素的宽度水平居中
 - `margin-left:auto` 让左边距填满,即元素会被挤到父元素的最右边   
