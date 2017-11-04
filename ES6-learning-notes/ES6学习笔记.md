@@ -1,12 +1,12 @@
 [TOC]
-# const 语法声明
+# 一、const 语法声明
 
 > const(声明的是一个只读的常量) , const与let类似,**只是let只能在声明的时候赋值**,`const a = 123`,不可以随意修改
 - 一旦声明,常量的值就可不改变
 - **作用域与let相似**只在声明所在的块级作用域内有效
 - const命令声明的常量和let一样也是**不提升**,同样存在**Temporal Dead Zone**( 暂时性死区),只在声明之后有效
 
-# Promise
+# 二、Promise
 
 ## 基本使用
 > promise就是个构造函数
@@ -132,3 +132,93 @@ Promise.race([
     console.log(result)
 }).catch(data=>console.log(data))
 ```
+
+# 三、es6的导入导出
+
+##  3.1-命名导出
+- 在任何变量名或者函数前加上`export`,就可以将它导出
+```js
+    export const str =  '123'
+    export function test () {
+        console.log('导出')
+    }
+``` 
+- 然后再另一个文件中导入
+```js
+    import { str, test } from 'xxx地址'
+
+    <!-- 然后就可以使用了 -->
+```
+## 3.2-默认导出
+- 使用`export default`导出,默认导出模块本身
+- 用这种方式导出一个页面只能使用一次
+```js
+    <!-- 无需指定变量名函数名等等 -->
+    exports default function () {
+        console.log(123)
+    }
+```
+- 对应的`import` 不同加 `{}`
+```js
+    import abc from 'xxx地址'
+    abc()
+```
+
+# 四、使用for..of 遍历
+
+1.语法
+```js
+    for( var value of arr ) {
+        console.log( i )       
+    }
+```
+
+2.与`forEach`的区别
+> `forEach`无法`break`,`return`,`continue`配合使用
+
+
+## 4.1 for..of 遍历对象的方式
+普通情况下, 如果用`for..of`遍历对象的话会报错 `obj is not iterable`
+解决方法有两种:
+--------
+1.使用`Object.keys`方法将键名生成一个数组
+```js
+    var obj = { name: 'lulinglong', age: 18 }
+    for( var key of Object.keys( obj ) ) {
+        console.log(`${key}----${obj[key]}`)
+    }
+```
+
+2.使用`Generator`函数将对象重新包装一下
+
+
+# 五、模板字符串
+ES6中拼接字符串采用`${}我是变量外的文字`的方式,将变脸包裹在{}中 
+```js
+<!-- 旧版字符串拼接 -->
+var name = 'luling'
+console.log('名字是' + name)
+
+<!-- 新版字符串拼接 -->
+var name = 'lulinglong'
+console.log(`名字是{name}`)
+```
+
+# 六、Generator 函数
+`Generator`函数时ES6中引入的新型函数,用于异步编程的,与普通函数不用的地方
+1.函数声明`function`后要跟`*`号
+2.函数内部使用`yield`语句,定义不同的内部状态
+```js
+    <!-- 一个典型的Generator函数 -->
+    function* g () {
+        yield 1;
+        yield 2;
+        yield 3;
+        return 4;
+    }
+    <!-- 总共四个阶段 -->
+```
+
+## 6.1 两个神奇的地方
+1. **g()并不是执行函数**,也不会返回函数的运行结果,而是一个**指向内部状态**的指针对象,也就是(Iterator Object)遍历器对象
+2.  
