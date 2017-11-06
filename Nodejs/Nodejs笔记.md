@@ -152,3 +152,182 @@
     - 在不写后缀的情况下 三种模块的加载优先级 .js > .json > .node
 3. **可以加载包例如** `require('vue')`
     - 原理:原先从当前文件夹的`package.json`中查找依赖,然后从当前文件向上查找`node-modules`中的包
+
+# 七、Buffer操作
+## 7.1 Buffer基本操作
+> Buffer对象是Node处理二进制数据的一个接口。它是Node原生提供的全局对象，可以直接使用，不需要require(‘buffer’)。
+
+- 实例化
+    + Buffer.from(array)
+    + Buffer.from(string)
+    + Buffer.alloc(size)
+- 功能方法
+    + Buffer.isEncoding() 判断是否支持该编码
+    + Buffer.isBuffer() 判断是否为Buffer
+    + Buffer.byteLength() 返回指定编码的字节长度，默认utf8
+    + Buffer.concat() 将一组Buffer对象合并为一个Buffer对象
+- 实例方法
+    + write() 向buffer对象中写入内容
+    + slice() 截取新的buffer对象
+    + toString() 把buf对象转成字符串
+    + toJson() 把buf对象转成json形式的字符串
+
+# 八、路径操作
+
+8.1 基础路径操作
+```js
+    //路径操作
+    const path = require( 'path' )
+
+    path.basename('/foo/bar/xxx.html')--xxx.html
+    path.basename('/foo/bar/xxx.html','html')-->xxx
+
+
+```
+
+8.2 获取路径
+- `console.log(__dirname)`
+- `console.log(path.dirname('xxx'))`
+
+8.3 获取扩展名
+- `path.extname('index.html')`
+
+8.4 路径的格式化处理
+- 对象转为字符串--->`path.format()` 
+```js
+    let objPath = {
+        root: 'D:\\'文件根路径
+        dir: 'D:\\Doc\\xx' 文件全路径
+        base: '02.js' 文件的名称
+        ext: '.js' 扩展名
+        name: '02' 文件名称
+    }
+    let strPath = path.format(objPath)
+
+```
+- 字符串转对象--->'path.parse'
+```js   
+    let obj = path.parse(__filename);
+    console.log( obj )
+    //结果
+    {
+        root: 'xxx'文件根路径
+        dir: 'xx' 文件全路径
+        base: '02.js' 文件的名称
+        ext: '.js' 扩展名
+        name: '02' 文件名称
+    }
+
+```
+
+
+# 九、文件操作
+> 注意：凡是带有`callback`的方法都是异步的,带有`Sync`都是**同步的**
+
+## 9.1 判断文件类型
+- 声明 `const fs = require( 'fs' )`
+- 是否为文件 `stat.isFile()`
+- 是否为目录 `stat.isDirectory()`
+```js
+    const fs = require( 'fs' )
+    //这里的路径是相对路径
+    fs.stat('./02.js',(err,stat) => {
+        if( err ) return;
+        if(stat.isFile()){
+            //判断是否为文件
+            console.log('文件')
+            console.log(stat.atime)//访问时间
+            console.log(stat.ctime)//改变时间
+            console.log(stat.birthtime)//出生时间
+        }else if(stat.isDirectory()){
+            //判断是否为目录
+            console.log('目录')
+        }
+    })
+```
+
+
+
+### 9.1.1 同步操作
+- `let ret = fs.statSync( './data.tet' )`
+
+
+## 9.2 读写文件操作
+### 9.2.1 读操作
+- `fs.readFile(file[,options],callback)`
+-  参数一`file`:文件名称
+-  参数二：如果有第二个参数**并且是编码**,那么回调函数获取到的就是字符串
+    + 如果没有指定,那么获取到的数据就是**Buffer实例对象**
+```js
+    //异步操作
+    const fs = require( 'fs' )
+    const path = require( 'path' )
+    let strpath = path.join( __dirname, 'data.txt' )
+    fs.readFile( strpath, 'utf8', ( err, data ) => {
+        if( err ) return;
+        //指定第二个参数
+        console.log(data)
+
+        //未指定第二个参数
+        console.log(data.toString())
+    } )
+
+    //同步操作 与异步不同的是同步没有callback 是返回值
+    let ret = fs.readFileSync('./data.txt', 'utf8')
+    console.log( ret )
+```
+
+### 9.2.2 写文件操作
+> 全部写入内存 ，不适合操作大文件
+- `fs.writeFile(file,data[,option],callback)`
+- 大体上与读文件操作参数相同
+```js
+     const fs = require( 'fs' )
+     const path = require( 'path' )
+     拼接绝对路径
+     let strpath = path.join( __dirname, 'writeSth.txt' )
+     fs.writeFile(strpath, '一生就找那颗星星', 'utf8' (err) => {
+        if(!err) {
+            console.log('写入成功')
+        }
+     })
+```
+
+## 9.3 大文件操作(流式操作)
+- 读文件操作 `fs.createReadStream(path[, options])`
+```js   
+    const fs = require( 'fs' )
+    const path = require( 'path' )
+
+    let spath = path.join(__dirname,'pipe') //读的这个文件
+    let dpath = path.join() //将要写入的地址
+
+    let num = 1;
+    //一块块写入
+    readStream.on('data',(chunk)=>{
+        num++;
+        writeStream.write()
+    })
+```
+> 输入流 从磁盘到内存 <br>
+输出流 从内存到磁盘  
+
+- 写文件操作 `fs.createWriteStream(path[, options])`
+
+```js
+    //声明文件对象和路径对象
+
+    const path = require('path')
+    const fs = require('fs')
+    
+     //合成读路径和写路径,手写路径需要转义
+    let spath = path.join(__dirname,'../','test2.zip')
+    let dpath = path.join('C:/Users/Administrator/Desktop','test2.zip')
+    
+    let readStream = fs.createReadStream(spath)
+    let writeStream = fs.createWriteStream(dpath)
+    
+    readStream.pipe(writeStream)
+```
+
+

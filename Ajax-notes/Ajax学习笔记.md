@@ -1,3 +1,4 @@
+[TOC]
 # Ajax学习笔记
 ## 1 http协议的请求方式
 - get ： 获取数据
@@ -19,7 +20,6 @@
         即超文本传输协议，网站是基于HTTP协议的。
         HTTP协议是由从客户机到服务器的请求(Request)和从服务器到客户机的响应(Response)进行了约束和规范。
         即HTTP协议主要由请求和响应构成。
-[TOC]
 - HTTPS协议
 
         以安全为目标的HTTP通道，简单讲是HTTP的安全版。
@@ -102,6 +102,25 @@
                         echo  "用户名错误";
                     }
                 ?>
+
+### get和post的区别
+
+1. get是从服务器上获取数据，post是向服务器传送数据。
+2.  get是把参数数据队列加到提交表单的ACTION属性所指的URL中，值和表单内各个字段一一对应，在URL中可以看到。post是通过HTTP post机制，将表单内各个字段与其内容放置在HTML HEADER内一起传送到ACTION属性所指的URL地址。用户看不到这个过程。
+3. 对于get方式，服务器端用Request.QueryString获取变量的值，对于post方式，服务器端用Request.Form获取提交的数据。
+4. get传送的数据量较小，不能大于2KB。post传送的数据量较大，一般被默认为不受限制。但理论上，IIS4中最大量为80KB，IIS5中为100KB。
+5. get安全性非常低，post安全性较高。但是执行效率却比Post方法好。
+ 
+> **建议：**
+1. get方式的安全性较Post方式要差些，包含机密信息的话，建议用Post数据提交方式；<br>
+2. 在做数据查询时，建议用Get方式；而在做数据添加修改或删除时，建议用Post方式；<br>
+> **补充** 
+>  GET和POST本质上就是TCP链接
+>  GET产生一个TCP数据包;POST产生两个TCP数据包。
+>  对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200(返回数据);
+而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok(返回数据)。
+>  并不是所有浏览器都会在POST中发送两次包，Firefox就只发送一次
+
 
 ## 5 PHP遍历数组的方法
 - 使用for循环
