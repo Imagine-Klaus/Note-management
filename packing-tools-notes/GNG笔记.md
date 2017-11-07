@@ -252,3 +252,89 @@ gulp.task('html', function(){
   gulp.watch(['./app.js','sign.js'],['script'])
 })
 ```
+
+
+# 4.0 npm
+
+
+## 4.1 npm全局安装,本地安装的区别
+1. 全局安装:平时用于命令行工具(位于node.js环境的node_modules的文件夹下);
+2. 本地安装:开发使用
+    + 在当前目录下的node_modules里面,**一般用于实际的开发工作**
+
+## 4.2 npm常用命令
+> 如果不加`--save`/`-dev` 的话 有可能不会保存到`package.json`
+1. 安装包 <br>
+    npm install -g 包名称<br>
+    npm install 包名称
+2. 安装特定版本<br>
+    npm install -g 包名称@版本号<br>
+3. 卸载包 <br>
+    npm uninstall -g 包名称
+4. 更新包<br>
+    npm update -g 包名称
+
+## 4.3 本地包的使用步骤
+1. `npm init -y` <br>
+    生成package.json文件
+
+## 4.4 demo.js文件执行的两种方式
+1. `node demo.js` <br>
+2. npm run test
+    + 此处要在`package.json`配置
+    `"scripts": {"test": "node demo.js"}`
+
+## 4.5 开发环境与生产环境
+### 01-开发环境 --save -dev
+> 只在开发的时候用
+### 02-生产环境 --save
+> 开发和项目部署上线后的服务器环境都需要的包
+- `npm intall --production`  
+    +  生产环境命令,只会安装`dependencies`中的包
+
+## 解决npm安装包被墙的问题
+- 方案一： --registry
+    + npm config set registry=https//registry.npm.taobao.org 
+- 方案二： cnpm
+    + 淘宝NPM镜像,与官方NPM的同步频率目前为10分钟一次 
+    + 官网: http://npm.taobao.org/ 
+    + npm install -g cnpm –registry=https//registry.npm.taobao.org 
+    + 使用cnpm安装包: cnpm install 包名
+- 方案三： nrm
+    + 作用：修改镜像源 
+    + 项目地址：https://www.npmjs.com/package/nrm 
+    + 安装：npm install -g nrm
+  
+# 五、yarn
+
+## 5.1 安装yarn 
+- npm install -g yarn
+
+## 5.2 基本命令以及与npm使用的区别
+- 1.初始化包
+    - npm init
+    - yarn inti
+- 2.安装包
+    - `npm install xxx --save`
+    - `yarn add xxx`
+- 3.移除包
+    - `npm uninstall xxx`
+    - `yarn remove xxx`
+- 4.更新包
+    - `npm update xxx`
+    - `yarn upgrade xxx`
+- 5.安装开发依赖的包
+    - `npm install xxx --save-dev`
+    - `yarn add xxx --dev`
+- 6.全局安装
+    - `npm install -g xxx`
+    - `yarn global add xxx`
+- 7.设置镜像地址 
+    - `npm config set registry url`
+    - `yarn config set registry url`
+- 8.安装所有依赖
+    - `npm install`
+    - `yarn install`
+- 9.执行包
+    - `npm run`
+    - `yarn run`

@@ -2,7 +2,7 @@
 
 
 
-# CSS基本概念
+# 第一节、CSS基本概念
 
 ##  CSS盒模型
 > 总共有两种<br/>   
@@ -41,6 +41,16 @@
    overflow:hidden;
    white-space:nowrap;//强制不换行;
    }
+```
+- **实现第二行超出省略效果**
+```css
+    p{
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }    
 ```
 
 
@@ -439,11 +449,11 @@ input:focus::-webkit-input-placeholder{color:#EEEEEE;}
 }
 ```
 
-## flex 详解
+# 第二节、flex 详解
 
 >  设为`flex`布局的盒子 子元素的`float`,`clear`,`vertical-align`将失效
 
-### 1 容器的属性
+## 1 容器的属性
 
 ```
     //flex 有六个属性
@@ -455,7 +465,7 @@ input:focus::-webkit-input-placeholder{color:#EEEEEE;}
     6. align-content 
 
 ```
-#### 1.1 flex-direction 
+### 1.1 flex-direction 
 **决定主轴的排列方向**
 ```css
 .box{
@@ -477,7 +487,7 @@ input:focus::-webkit-input-placeholder{color:#EEEEEE;}
 > column-reserve:
 > 主轴为竖直方向**从下到上**排列
 
-#### 1.2 flex-wrap
+### 1.2 flex-wrap
 这个属性用来定义元素在轴线排列**是否换行**
 ```css
 .box{
@@ -486,7 +496,7 @@ input:focus::-webkit-input-placeholder{color:#EEEEEE;}
 ```
 > 其中 `wrap-reserve` 设定后元素反向换行,换行,第一行在下面
 
-#### 1.3 flex-flow
+### 1.3 flex-flow
 是 `flex-direction` 和`flex-wrap`的简写 默认值:`row nowrap`
 
 ```css
@@ -495,7 +505,7 @@ input:focus::-webkit-input-placeholder{color:#EEEEEE;}
 }
 ```
 
-#### 1.4 justify-content
+### 1.4 justify-content
 定义在**主轴上的对齐方式**
 ```css
 .box {
@@ -503,7 +513,7 @@ input:focus::-webkit-input-placeholder{color:#EEEEEE;}
 }
 ```
 
-#### 1.5 align-items
+### 1.5 align-items
 > 定义在**交叉轴**的排列方式
 ```css
 .box {
@@ -514,11 +524,11 @@ input:focus::-webkit-input-placeholder{color:#EEEEEE;}
 
 - strench:**如果项目没有设置高度或者设为auto,那么将占满屏幕**
 
-####  1.6 align-content
+###  1.6 align-content
 > 定义多跟轴线的对齐方式，如果项目只有一条基线,该属性不起作用
 
 
-### 2. 设置在子元素的属性
+## 2. 设置在子元素的属性
 - order
 - flex-grow
 - flex-shrink
@@ -526,7 +536,7 @@ input:focus::-webkit-input-placeholder{color:#EEEEEE;}
 - flex
 - align-self
 
-#### 2.1 order属性
+### 2.1 order属性
 > order 属性定义元素的排列顺序。数值越小越靠前
 ```css
  .item{order:1}
@@ -534,27 +544,27 @@ input:focus::-webkit-input-placeholder{color:#EEEEEE;}
 ```
 ![](./imgs/order.png)
 
-#### 2.2 flex-grow属性
+### 2.2 flex-grow属性
 > 定义元素的放大比例,默认为**0** <br/>
 > 如果有一个元素的值为2而其他元素都为1的话,那么会占据剩余空间**比别人多一倍**
 ```css
    .item{flex-grow:1}
 ```
 
-#### 2.3 flex-shrink属性
+### 2.3 flex-shrink属性
 > 定义元素的缩小比例,默认为1,即如果空间不足,项目将缩小<br/>
 > 如果有一个设置为零而其他设置为1时，**当空间不足，设置为0的不会缩小**    
 
-#### 2.4 flex-basis属性
+### 2.4 flex-basis属性
 > 该属性定义了再分配多余空间之前,项目占据的主轴空间
 ```css
 item{ flex-basis:<length> | auto}
 ```
 
-#### 2.5 flex属性 (优先使用)
+### 2.5 flex属性 (优先使用)
 > 是 flex-grow flex-shrink flex-basis 的缩写 默认 `0 1 auto`
 
-#### 2.6 align-self
+### 2.6 align-self
 > 允许单个元素与其他不一样的对齐方式,可以覆盖`align-items`属性
 ```css
    .item{auto | flex-end | flex-start | center | stretch | baseline }

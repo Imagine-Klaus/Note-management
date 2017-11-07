@@ -171,6 +171,7 @@
     + slice() 截取新的buffer对象
     + toString() 把buf对象转成字符串
     + toJson() 把buf对象转成json形式的字符串
+    + 用'+'号拼接会自动把`chunk`转为字符串
 
 # 八、路径操作
 
@@ -182,17 +183,19 @@
     path.basename('/foo/bar/xxx.html')--xxx.html
     path.basename('/foo/bar/xxx.html','html')-->xxx
 
-
 ```
 
 8.2 获取路径
+
 - `console.log(__dirname)`
 - `console.log(path.dirname('xxx'))`
 
 8.3 获取扩展名
+
 - `path.extname('index.html')`
 
 8.4 路径的格式化处理
+
 - 对象转为字符串--->`path.format()` 
 ```js
     let objPath = {
@@ -312,7 +315,7 @@
 > 输入流 从磁盘到内存 <br>
 输出流 从内存到磁盘  
 
-- 写文件操作 `fs.createWriteStream(path[, options])`
+- 写文件操作 `fs.createWriteStream(path[, options])`(pipe.js)
 
 ```js
     //声明文件对象和路径对象
@@ -330,4 +333,284 @@
     readStream.pipe(writeStream)
 ```
 
+# 十、目录操作
+- 创建目录 `fs.mkdir(path[, mode], callback)`
+```js   
+    const path = require('path')
+    const fs = require('fs')
+    //创建目录
+    fs.mkdir(path.join(__dirname, 'abc'),(err) => {
+            console.log(123)         
+    })
+```
 
+- 读取目录  `fs.readdir(path[, mode],callback)`
+```js   
+    fs.readdir(__dirname, (err, files) => { //files包含所有的文件和文件夹
+        files.forEach((item,index) => {
+            fs.stat(path.join(__dirname,item),(err, stat) => {
+                if(stat.isFile()){
+                    console.log(item+'文件')
+                }else if(stat.isDirectory()) {
+                    console.log(item+'目录 ')
+            })
+        })
+    })
+```
+
+- 删除目录 `fs.rmdir(path,callback)`
+    + 如果目录中有内容就无法删除
+```js
+    fs.rmdir(path.join(__dirname, 'abc'),(err) => {
+        console.log(err)
+    })
+```
+
+## 自动化创建目录(init.js)
+```js
+const path = require('path')
+const fs = require('fs')
+
+let fileContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div>welcome to this</div>
+</body>
+</html>
+`;
+
+//所要创建目录的位置
+let root = 'C:\\Users\\Administrator\\Desktop'
+/*初始化目录结构*/
+let initData = { 
+    projectName: 'New-Directory',
+    data: [
+        {
+            type: 'dir',
+            name: 'img'
+        },
+        {
+            type: 'dir',
+            name: 'js'
+        },
+        {
+            type: 'dir',
+            name: 'css'
+        },
+        {
+            type: 'file',
+            name: 'index.html'
+        }
+    ]
+}
+
+//创建根目录
+fs.mkdir(path.join(root,initData.projectName), (err) => {
+    if(err) return;
+    //遍历data中的所有数据 ,对文件类型做判断
+    //如果是目录, 那么mkdirSync
+    //如果是文件, 那么writeFileSync 对不存在的文件写入的时候会创建文件
+    initData.data.forEach((item) => {
+        if(item.type == 'dir'){
+            fs.mkdirSync(path.join(root,initData.projectName,item.name))
+        }else if (item.type == 'file'){
+            fs.writeFileSync(path.join(root, initData.projectName, item.name),fileContent)
+        }
+    })
+})
+```
+
+# 十一、静态资源操作
+## 11.1 初步实现服务器功能
+- 1.引入http对象---`require('http')`
+- 2.创建服务器实例对象---`http.createServer()`
+- 3.绑定请求事件---`server.on('request',(req, res) =>{res.end('hello')})`
+- 4.监听端口---`server.listen(3000)`
+```js
+    const http = require('http')
+    //创建服务器实例对象
+    let server = http.createServer();
+    //基于事件的编程风格,绑定请求事件
+    server.on('request',(req,res) => {
+        res.end('hello');
+    })
+    //监听端口
+    server.listen(3000)
+
+
+    
+```
+- 5.承接上面，基于事件的方式可以用更简洁的方式
+```js
+
+http.createServer((req, res) => {
+        res.end('ok')
+}).listen(3000,'192.168.15.45',() =>{
+    console.log('running')
+})
+//指定ip地址
+```
+
+## 11.2 处理路径的分发
+- `createServer`中的`req` 和 `res`
+    + `req`：`req.url`可以拿到**url地址栏中**的数据
+    + `req`: `req.on` 可以用来处理事件
+    + `res`: `res.write` 可以向客户端页面响应内容,可以写多次
+    + `res`: `res.end` 用来**结束响应 **,只能写一次
+- 如何写入中文？
+> res.writeHead(200, { <br>
+        'Content-Type':'text/plain;charset=utf8' <br>
+  })
+```js
+    const http = require('http')
+    http.createServer((req, res) => {
+        res.writeHead(200, { 
+            'Content-Type':'text/plain;charset=utf8'
+         })
+        //这边的路径指的是端口后面的部分
+        if(req.url.startsWith('/index')){
+            res.end('index')
+            //write向客户端响应内容,可以写多次
+            //end 方法用来完成响应,只能写一次
+            res.write('hello');
+            res.write('world');
+        }else if(req.url.startWith('/about')){
+            res.end('about')
+        }
+    }).listen(3000,'192.168.0.106', () => {
+            console.log('it's running')
+       })
+```
+
+## 11.3 处理静态资源脚本封装
+```js   
+    exports.staticServer = (req, res, root) =>{
+        fs.readFile(path.join(root,req.url), (err, fileContent) => {
+            if(err){
+                res.writeHead(404, {
+                    'Content-Type': 'text/plain; charset=utf8'
+                })
+                res.end('没有找到页面')
+            }
+            else{
+                //声明dtype
+                let dtype = 'text/plain'
+                //判断文件后缀名
+                let ext = path.extname(req.url)
+                //查询mime 
+                if(mime[ext]){
+                    dtype = mime[ext]
+                }
+                
+                //如果是text开头的 ，那么完整Content-Type 设置
+                if(dtype.startsWith('text')){
+                    dtype += '; charset=utf8'
+                }
+
+                //设置响应头
+                res.writeHead(200, {
+                    'Content-Type': dtype
+                })  
+                res.end(fileContent)
+            }
+        })
+    }
+```
+
+## 11.4 get参数处理
+- 声明url对象:`const url = require('url')`
+- 将对象转为路径字符串: `url.format(xxx)`
+- 将url参数转为对象: `url.parse(xxx,true)` --->加`true`转为对象,不加的话`query`的值是一个字符串,不利于操作 
+- 通过转化后的对象`ret.query.key`能获取到指定参数值
+```js
+    const url = require('url')
+    const str = 'http://www.baidu.com/abc/qqq?flag=123&keyword=java'
+    let ret = url.parse(str,true) //将路径转换为对象
+    console.log(ret.query.flag) //获取参数值
+    
+```
+
+## 11.5 post 参数处理
+- 声明`querystring`对象:`const querystring = require('querystring'`)
+- 字符串转为对象: `querystring.parse(param)`
+- 对象转为字符串: `querystring.stringify(param)`
+```js   
+    const querystring = require('querystring')
+
+    //parse方法的作用就是把字符串转成对象
+    let param = 'username=list&password=123'
+    //如果参数中有键名一样的数值 会处理到数组中password:['123',456]
+    let obj = querystring.parse(param)
+    console.log(obj.username)
+```
+### 启动服务器模拟post
+```js
+- `req.on('data',(chunk)){pdata+=chunk}`:逐块加载资源块
+- `req.on('end')`:结束加载事件
+const querystring = require('querystring')
+const http = require('http')
+
+http.createServer((req, res) => {
+    if(req.url.startsWith('/login')){
+        let pdata = '';
+        req.on('data', (chunk) => {
+            pdata+=chunk
+        })
+
+        req.on('end', () => {
+            res.end(querystring.parse(pdata).username)
+        })
+    }
+}).listen(3000, () => {
+    console.log('running...')
+})
+```
+
+## 11.6 一个登陆模型
+```js
+const http = require('http')
+const method = require('./staticServer.js')
+const url = require('url')
+const querystring = require('querystring')
+http.createServer((req, res) => {
+    //静态资源
+    if(req.url.startsWith('/www')){
+        method.staticServer(req, res, __dirname)
+    }
+    //动态资源
+    //如果是get请求
+    if(req.url.startsWith('/login')){
+        if(req.method == 'GET'){
+            let param = url.parse(req.url,true).query
+            if (param.username == 'admin' && param.password == 12345){
+                res.end('login success')
+            }else {
+                res.end('login failure')
+            }
+        }else if (req.method == 'POST'){
+            let pdata = ''
+            //基于事件处理数据
+            req.on('data', (chunk) => {
+                // 用'+'号拼接自动将chunk 转为字符串
+                pdata += chunk
+            })
+            req.on('end', () => {
+                let param = querystring.parse(pdata)
+                if(param.username == 'admin' && param.password == 12345){
+                    res.end('login success')
+                }else{
+                    res.end('login failure')
+                }
+            })
+        }
+    }
+
+}).listen(3000, () => {
+    console.log('runing...running')
+})
+```

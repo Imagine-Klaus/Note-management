@@ -204,11 +204,11 @@ for (let [key, value] of entries(obj)) {
 
 
 # 五、字符串方法扩展
-## 5.1 includess()方法
+## 5.1 includes()方法
 - 判断字符串中是否包含指定字符(有的话true, 否则false)
 - **参数一**：匹配的字符串 **参数二**: 从第几个开始匹配
 
-## 5.2 startWith()
+## 5.2 startsWith()
 - 判断字符串中是否以特定的字符串开始
 
 ## 5.3 endWith()
@@ -218,7 +218,9 @@ for (let [key, value] of entries(obj)) {
 # 六、函数扩展学习
 
 1.可以传递默认值
+
 2.参数可以进行解构解析
+
 3.`...rest` (rest参数,名称可以自定义) --- 把单个数据项解析为数组
 ```js
     function foo(a,b,...param){
