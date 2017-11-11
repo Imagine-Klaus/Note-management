@@ -103,24 +103,21 @@
                     }
                 ?>
 
-### get和post的区别
+### 4.1 get和post的区别
 
-1. get是从服务器上获取数据，post是向服务器传送数据。
-2.  get是把参数数据队列加到提交表单的ACTION属性所指的URL中，值和表单内各个字段一一对应，在URL中可以看到。post是通过HTTP post机制，将表单内各个字段与其内容放置在HTML HEADER内一起传送到ACTION属性所指的URL地址。用户看不到这个过程。
-3. 对于get方式，服务器端用Request.QueryString获取变量的值，对于post方式，服务器端用Request.Form获取提交的数据。
-4. get传送的数据量较小，不能大于2KB。post传送的数据量较大，一般被默认为不受限制。但理论上，IIS4中最大量为80KB，IIS5中为100KB。
-5. get安全性非常低，post安全性较高。但是执行效率却比Post方法好。
- 
-> **建议：**
-1. get方式的安全性较Post方式要差些，包含机密信息的话，建议用Post数据提交方式；<br>
-2. 在做数据查询时，建议用Get方式；而在做数据添加修改或删除时，建议用Post方式；<br>
-> **补充** 
->  GET和POST本质上就是TCP链接
->  GET产生一个TCP数据包;POST产生两个TCP数据包。
->  对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200(返回数据);
-而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok(返回数据)。
->  并不是所有浏览器都会在POST中发送两次包，Firefox就只发送一次
+1. get从语义上来说是**获取数据**,而post是**提交数据**
+2. `get`获取到的数据**会被浏览器设置缓存**,而post不会,除非主动设置
+3. `get`在url中传参是`有长度限制的`,而post没有
+4. get相比post而言较为不安全
 
+
+<h4>本质区别之中级奥义</h4>
+- GET和POST本质上就是TCP链接
+- GET产生一个TCP数据包;POST产生两个TCP数据包。
+- 对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200(返回数据);
+- 而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok(返回数据)。
+    + 并不是所有浏览器都会在POST中发送两次包，Firefox就只发送一次
+    + 网络好的情况下差别不大 **在网络差的情况下,两次包的TCP在验证数据包完整性上会更优一些**  
 
 ## 5 PHP遍历数组的方法
 - 使用for循环
@@ -166,7 +163,8 @@
 
 > **缺点：会为页面增加不必要的标签**
 
-## 那么咱来聊聊Ajax
+## 6. 那么咱来聊聊Ajax
+- ajax全称:`Asynchronous Javascript And XML`
 
 - ajax的请求过程是怎样的
 
@@ -195,24 +193,7 @@
             5.0 不容易调试；    
 
 
-## 关于XML格式
-
-**什么是XML**
-
-            1、XML指可扩展的标记语言
-            2、主要用来输出和存储数据 --- 注意：设置宗旨是【传输数据】，而非显示数据
-            3、XML标签没有预定义，需要自行定义标签 --- 就是说XML具有自我描述性
-
-**XML数据格式的缺点**
-
-            1、原数据占用的数据量比较大，不利于大量数据的网络传输
-            2、解析不太方便
-
-**XML与html的区别**
-
-            html是用于显示数据的，而XML是用来传输数据的
-
-## 关于json你要知道
+## 7. 关于json你要知道
 - JSON相比XML
 
             更轻量级，更易解析，更快、
@@ -227,7 +208,7 @@
              var obj = eval(‘(’ + str1 + ‘)’)			 --- 把字符串解析成JS代码并执行
             
 
-## 关于跨域
+## 8. 关于跨域
 - 什么情况下会跨域
 
             1.0 网络协议不同，如http协议访问https协议。
@@ -252,7 +233,7 @@
 
 
 
-## Jsonp的基本原理
+### 8.1 Jsonp的基本原理
 
 - 利用script的特性(可以把引用过来的内容当做js代码执行)**动态创建**scirpt，通过src使用**get**的请求方式向服务端发送跨域请求，通过响应的内容调用事先定义好的方法。
 
@@ -265,30 +246,144 @@
         json呢，是一种数据交换的格式，js原生支持，后台几乎全部支持；
         jsonp呢，是基于浏览器同源策略下进行跨域的一种调用方式  
 
-## artTemplate使用  
+### 8.2 CORS：跨域最优解决方案   
+<h4>一、简介</h4>
+CORS `(Cross-origin reource sharing)` ：跨域资源共享,它允许浏览器向跨源服务器发出`XMLHttpRequest`请求
 
-### 编写模板
-- 使用一个**type = "text/html"**的script的标签来存放模板
+<h4>二、两种请求</h4>
+浏览器将CORS请求分为两类，简单请求和非简单请求.只要同时满足以下两大条件就属于简单请求.
+```html
+    //请求方式是三者中的一个
+    HEAD
+    GET
+    POST
 
-        例如:<script type="text/html" id="template">
-                <h1>{{title}}</h1>
-                {{each books as value}}
-                <div>
-                    {{value}}
-                </div>
-                {{/each}}         
-                
-            </script>  
+    //HTTP请求字段不超过以下几种字段
+    - Accept
+    - Accept-Language
+    - Content-Language
+    - Last-Event-ID
+    - Content-Type  text/plain, application/x-www-form-urlencoded  multipart/form-data
+```
+- application/x-www-form-urlencoded，默认编码格式 ，
+    + 一般格式`username=twm&email=good@qq.com`
+-  multipart/form-data:一般用于多文件的上传
 
-### 渲染模板
-- template("id",数据)
+#### 8.2.1 简单请求
+<h5>1.0 基本流程</h5>
 
-                var  data= {
-                title:"书名",
-                books:["三国演义","水浒传","西游记"]
-                }
-    
-            //添加数据后渲染
-            var html = template("template",data);
-            var container = document.getElementById("container")
-            container.innerHTML=html;
+> 对于简单请求,浏览器直接发出CORS请求,在浏览器发现跨源AJAX请求是简单请求,就会**自动**在头信息请求头中加入`Origin`字段
+```html
+    GET /cors HTTP/1.1
+    Origin: http://api.bob.com      <------
+    Host: api.alice.com
+    Accept-Language: en-US
+    Connection: keep-alive
+    User-Agent: Mozilla/5.0..
+```
+- 服务器**会根据Origin字段**，**决定是否同意**这次请求
+- 如果Origin指定的源不在许可范围内,服务器会向浏览器返回一个正常的HTTP响应(**有可能是200**), 当浏览器发现响应头中没有包含`Access-Control-Allow-Origin` 字段时，就会抛出一个错误,被`XMLHttpRequest`的`onerror`回调函数捕获。
+- 如果在服务器的许可范围内,就会抛出以下字段：
+```html
+    Access-Control-Allow-Origin: *
+    Access-Control-Allow-Credential: true
+    Access-Control-Expose-Headers: FooBar
+    Content-Type: text/html; charset=utf-8
+```
+1) **Access-Control-Allow-Origin**
+> 该字段时必须的。它的值要么是请求是Origin的字段，要么是`*`，表示服务器允许的域名
+
+2) **Access-Control-Allow-Credential**
+> 值：true/false, **表示是否允许**请求带有Cookie,
+
+3) **Access-Control-Expose-Headers**
+> 该字段可选,`XMLHttpRequest`对象的`getResponseHeader()`方法**只能拿到6个基本字段**：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma。**如果想拿到其他字段，就必须在Access-Control-Expose-Headers里面指定。**
+
+-------
+
+<h5>2.0 withCredentials属性</h5>
+> 上面说到,CORS请求默认不发送Cookie和HTTP的认证信息,如果要发送,一方面需要服务器指定`Acces-Control-Allow-Credentials: true`   <br>
+> 另一方面需要`ajax`中打开`withCredentials`属性 `xhr.withCredentials = true`
+```js
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+```
+
+- 注意: 如果需要发送cookie,`Access-Control-Allow-Origin`就不能设为*号,**必须明确指定与请求网页一致的域名**。同时Cookie依然支持同源策略,即**在哪个域名下设置的cookie还是只能在哪个域名下使用和发送**
+
+#### 8.2.2 非简单请求
+--------
+
+<h5>1.0 预检请求</h5>
+非简单请求就是对服务器有特殊要求的请求,比如请求方式是PUT,DELETE,或者`Content-Type:appliction/json`
+
+非简单请求的CORS请求,会在正式通信前,**增加一次HTPP查询请求**,称为**预检请求(preflight)**
+
+浏览器**先询问服务器**，**请求的网页域名是否在服务器允许的名单中**,以及可以使用哪些HTTP动词和头信息字段,只有得到肯定答复,浏览器才会正式的发出`XMLHttpRequest`请求,否则就报错
+```js
+    //这是一段js脚本
+    var url = 'http://api.alice.com/cors';
+    var xhr = new XMLHttpRequest();
+    //请求方式put,
+    xhr.open('PUT', url, true);
+    //自定义头信息
+    xhr.setRequestHeader('X-Custom-Header', 'value');
+    xhr.send();
+```
+浏览器发现,这不是一次简单的请求,就会向服务器发出一次"预检"请求,**要求服务器确认请求**,以下是"预检"请求的请求头信息
+```html
+        OPTIONS /cors HTTP/1.1
+        Origin: http://api.bob.com    <---- 关键字段
+        Access-Control-Request-Method: PUT
+        Access-Control-Request-Headers: X-Custom-Header
+        Host: api.alice.com
+        Accept-Language: en-US
+        Connection: keep-alive
+        User-Agent: Mozilla/5.0...
+```
+- "预检"请求的请求方法是`OPTION`,**表示这个请求是用来询问的**,
+
+-----------
+
+<h5>2.0 预检请求的回应</h5>
+服务器收到"预检请求"后,会检查`Origin`,`Access-Control-Request-Method`, `Access-Control-Request-Headers`,确认允许跨源请求，做出响应
+```html
+    HTTP/1.1 200 OK
+    Date: Mon, 01 Dec 2008 01:15:39 GMT
+    Server: Apache/2.0.61 (Unix)
+    Access-Control-Allow-Origin: http://api.bob.com  <------- 关键字段
+    Access-Control-Allow-Methods: GET, POST, PUT
+    Access-Control-Allow-Headers: X-Custom-Header
+    Content-Type: text/html; charset=utf-8
+    Content-Encoding: gzip
+    Content-Length: 0
+    Keep-Alive: timeout=2, max=100
+    Connection: Keep-Alive
+    Content-Type: text/plain
+```
+- `Access-Control-Allow-Origin`也可以设为*号
+- `Access-Control-Allow-Methods`:(必须) 是服务器返回的所有支持的请求方式
+- `Access-Control-Allow-Headers`: 服务器支持的所有头信息字段
+- `Access-Control-Max-Age` : 指定本次预检的有效期，在此期间，不需要再预检
+
+<h5>3.0 浏览器的正常请求和回应</h5>
+一旦通过了"预检"请求,以后每次CORS请求，就和简单请求一样
+
+这是"预检"请求后，正常的CORS请求
+```html
+    PUT /cors HTTP/1.1     
+    Origin: http://api.bob.com  -----> 浏览器自动添加
+    Host: api.alice.com
+    X-Custom-Header: value
+    Accept-Language: en-US
+    Connection: keep-alive
+    User-Agent: Mozilla/5.0...
+```
+
+下面是服务器正常的回应。
+```html
+    Access-Control-Allow-Origin: http://api.bob.com
+    Content-Type: text/html; charset=utf-8
+```
+
+

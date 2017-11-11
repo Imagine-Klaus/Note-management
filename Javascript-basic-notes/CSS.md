@@ -3,6 +3,9 @@
 
 
 # 第一节、CSS基本概念
+## css书写的规范
+> 先写**显示属性**,然后写**自身属性**,最后写**文字或者修饰属性**
+
 
 ##  CSS盒模型
 > 总共有两种<br/>   
@@ -16,8 +19,18 @@
     <!DOCTYPE html>  
 ```
 
+## 关于继承
+- 可以继承的样式:font-size font-family color,ul li dl dd dt list-xxx font-xxx line-xxx text-xxx
+- 不可继承的样式:height、min-height、max- height、width、min-width、max-width、display、margin、border、padding、background、overflow、position、left、right、top、 bottom、z-index、float、clear、table-layout、vertical-align、page-break-after、 page-bread-before和unicode-bidi。
 
-## 处理文本段落的属性
+
+# 第二节、关于CSS修饰
+## 2.1 处理字间距
+- text-indent:用于设置缩进
+- letter-spacing:用于设置字间距 
+- word-spaing:用于设置单词间的间距(对中文无效)
+
+## 2.2 处理文本段落的属性
 - 1.0 white-space:属性设置如何处理元素内的空白
     + normal 默认。空白会被浏览器忽略。 
     + pre 空白会被浏览器保留。其行为方式类似 HTML 中的 pre 标签。 
@@ -53,8 +66,35 @@
     }    
 ```
 
+## 2.3`vertical-align`
+> `vertical-align`只对`inline-block`和`inline`元素起作用
 
-##  清除浮动的几种方式
+## 2.4 text-align
+- 设置文本或者元素水平位置
+    + 只对**行内块元素/行内元素水平位置**有用，对块状元素不起作用。(input是行内元素)
+
+## 2.5 background-repeat新增的两个值
+- *space*:向两端对齐平铺,多余留白
+
+- *round*:向两端对齐平铺,**多余直接拉伸**
+
+## 2.5 设置透明三种方式
+### rgba
+- `background:rgba(0,0,0,0.3)` 
+    + **不影响内部内容**
+### opacity
+- `opacity:0.3`
+    + 内部内容也会透明 且IE6/7/8 不支持
+
+### 兼容IE 透明
+> `filter:alpha(opacity=20)`
+
+
+
+
+# 第三节、关于CSS布局
+
+##  3.1 清除浮动的几种方式
 - 第一种：在浮动元素的末尾加上空的标签例如`<div style=”clear:both”></div> `  
    + 缺点分析:会造成很多无意义的空标签，违反结构与样式分离的原则
 - 第二种：br标签和其自身的html属性,如`<br clear="all">`
@@ -78,8 +118,7 @@
         visibility: hidden; 
     } 
 ```
-
-## 重要概念之BFC(Block Formatting contexts)
+## 3.2 重要概念之BFC(Block Formatting contexts)
 >概念：对css有了解的朋友肯定都知道盒式模型这个概念，对一个元素设置css，首先需要知道这个元素是block还是inline类型。而BFC就是用来格式化块级盒子，同样管理inline类型的盒子还有IFC，以及其他的FC。那首先我们就来看看FC的概念。
 - Formatting Context：指页面中一个渲染区域，并且拥有一套渲染规则，他决定了其子元素如何定位，以及与其他元素的相互关系和作用。
 
@@ -121,13 +160,35 @@
 - 作用三：防止margin重叠:
     + 方式：只要将两个元素不放入同一个BFC中即可
 
-## text-align
-- 设置文本或者元素水平位置
-    + 只对**行内块元素/行内元素水平位置**有用，对块状元素不起作用。(input是行内元素)
+## 3.3 实现元素在父盒子中居中的几种方式整理:
+- 在盒子内居中
+    + 方式一：`top:50%;left:50%;margin-top:-自身高一半;margin-left:- 自身宽度一半`;
+    + 方式二: 使用`transfrom:translate(-50%,-50%)`;
+    + 方式三: `display: flex;justify-content: center;align-items: center;`
+    + 方式四: 父盒子`position:relative`,子盒子`position:absolute`,然后同时设置left,right,top,bottm都为0,最后设置`margin:auto`;
+    + 方式五: 最不好的方法：使用maigin 或 定位 去拼凑数据
 
-## `vertical-align`
-> `vertical-align`只对`inline-block`和`inline`元素起作用
-## margin的应用
+
+## 3.4 解决li与li之间默认的空白
+方案一：
+
+> 设置为float:left;
+
+方案二：
+
+> ul设置为`font-size:0`(chrome不支持，因为chrome小于12px按12px处理)，可以用`letter-spacing:-3px` 处理
+
+## visibility
+- visibility中`collapse`的作用:
+
+> 当在表格元素中使用的时候，这个值可以删除一行或一列。*但是不会影响布局*,被行或者列占据的空间会留给其他元素时候。<br/>     
+当不是表格元素使用的时候,只会呈现出`hidden`的效果
+
+
+# 第四节、关于CSS自身属性
+
+
+## 4.1 margin的应用
 - `margin：0 auto` 可以让拥有宽度的元素根据父元素的宽度水平居中
 - `margin-left:auto` 让左边距填满,即元素会被挤到父元素的最右边   
 - 使用**margin:auto**实现居中,(并不常用),代码如下:
@@ -147,15 +208,18 @@
           margin-right:auto;
       }
 ``` 
-## 实现元素在父盒子中居中的几种方式整理:
-- 在盒子内居中
-    + 方式一：`top:50%;left:50%;margin-top:-自身高一半;margin-left:- 自身宽度一半`;
-    + 方式二: 使用`transfrom:translate(-50%,-50%)`;
-    + 方式三: `display: flex;justify-content: center;align-items: center;`
-    + 方式四: 父盒子`position:relative`,子盒子`position:absolute`,然后同时设置left,right,top,bottm都为0,最后设置`margin:auto`;
-    + 方式五: 最不好的方法：使用maigin 或 定位 去拼凑数据
 
-## CSS三角的写法
+## 4.2 padding撑盒子的问题
+- div不加上宽度,加padding不会撑开盒子
+- 如果加上宽度，加padding会撑开盒子
+
+## 4.3 元素竖向百分比设定是相对于容器的高度吗？
+> 当子元素的高度设为50%的时候,的确是相对于父元素的百分之50,而`margin,padding`特殊,他们设定的百分比相对于**父亲的宽度**
+
+
+
+# 五、CSS能够实现的那些效果
+## 5.1 CSS三角的写法
 ```css
     div {
         width: 0;     
@@ -168,7 +232,7 @@
         overflow: hidden;  /* ie6 高度问题 */
     }
 ```
-## 实现局部滚动条滚动的CSS方式
+## 5.2 实现局部滚动条滚动的CSS方式
 ```html
 <style>
     ::-webkit-scrollbar {
@@ -225,75 +289,7 @@
 </body>
 ```
 
-## 关于继承
-- 可以继承的样式:font-size font-family color,ul li dl dd dt list-xxx font-xxx line-xxx text-xxx
-- 不可继承的样式:height、min-height、max- height、width、min-width、max-width、display、margin、border、padding、background、overflow、position、left、right、top、 bottom、z-index、float、clear、table-layout、vertical-align、page-break-after、 page-bread-before和unicode-bidi。
-
-## padding撑盒子的问题
-- div不加上宽度,加padding不会撑开盒子
-- 如果加上宽度，加padding会撑开盒子
-
-## 解决li与li之间默认的空白
-方案一：
-
-> 设置为float:left;
-
-方案二：
-
-> ul设置为`font-size:0`(chrome不支持，因为chrome小于12px按12px处理)，可以用`letter-spacing:-3px` 处理
-
-## visibility
-visibility中`collapse`的作用:
-
-> 当在表格元素中使用的时候，这个值可以删除一行或一列。*但是不会影响布局*,被行或者列占据的空间会留给其他元素时候。<br/>     
-当不是表格元素使用的时候,只会呈现出`hidden`的效果
-
-## 抽离样式模块收藏用
-```css
-body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend,
- button, input, textarea, th, td { margin:0; padding:0; }
-        body, button, input, select, textarea { font:12px/1.5tahoma, arial, \5b8b\4f53; }
-        h1, h2, h3, h4, h5, h6{ font-size:100%; }
-        address, cite, dfn, em, var { font-style:normal; }
-        code, kbd, pre, samp { font-family:couriernew, courier, monospace; }
-        small{ font-size:12px; }
-        ul, ol { list-style:none; }
-        a { text-decoration:none; }
-        a:hover { text-decoration:underline; }
-        sup { vertical-align:text-top; }
-        sub{ vertical-align:text-bottom; }
-        legend { color:#000; }
-        fieldset, img { border:0; }
-        button, input, select, textarea { font-size:100%; }
-        table { border-collapse:collapse; border-spacing:0; }
-```
-
-## 元素竖向百分比设定是相对于容器的高度吗？
-> 当子元素的高度设为50%的时候,的确是相对于父元素的百分之50,而`margin,padding`特殊,他们设定的百分比相对于**父亲的宽度**
-
-## 解决在chrome浏览器下表单自动填充后背景色为黄色的问题:
-```css
-input:-webkit-autofill{
-    -webkit-box-shadow:0 0 0px 1000px white inset; //个人理解是运用白色内阴影遮挡黄色背景
-    -webkit-text-fill-color:#333;
-}
-
-```
-
-## 处理字间距
-- text-indent:用于设置缩进
-- letter-spacing:用于设置字间距 
-- word-spaing:用于设置单词间的间距(对中文无效)
-
-
-
-## background-repeat新增的两个值
-- *space*:向两端对齐平铺,多余留白
-
-- *round*:向两端对齐平铺,**多余直接拉伸**
-
-
-## CSS中超出隐藏滚动条效果(多用于移动端)
+## 5.3 CSS中超出隐藏滚动条效果(多用于移动端)
 > *以影藏X轴为例:*通过父元素**overflow:hidden** 子元素设置**overflow-x:auto;white-space:nowrap**;
 ```html
 <!DOCTYPE html>
@@ -415,14 +411,25 @@ input:-webkit-autofill{
 </html>
 ```
 
-## chrome浏览器css字体大小小于12px无效的解决办法
+六、一些实际场景中的问题
+## 6.1 解决在chrome浏览器下表单自动填充后背景色为黄色的问题:
+```css
+input:-webkit-autofill{
+    -webkit-box-shadow:0 0 0px 1000px white inset; //个人理解是运用白色内阴影遮挡黄色背景
+    -webkit-text-fill-color:#333;
+}
+
+```
+
+
+## 6.2 chrome浏览器css字体大小小于12px无效的解决办法
 > 设置body为`webkit-text-size-adjust`
 
 ## webkit表单元素的默认外观怎么重置
 
 > `.css{-webkit-appearance:none;}`
 
-## webkit表单输入框placeholder的颜色值改变 (安卓不行)
+## 6.3 webkit表单输入框placeholder的颜色值改变 (安卓不行)
 
 ```css
 input::-webkit-input-placeholder{color:#AAAAAA;}
@@ -430,15 +437,15 @@ input:focus::-webkit-input-placeholder{color:#EEEEEE;}
 
 ```
 
-## 如果需要手动写动画,你认为最小的事件间隔是多久?
+## 6.4 如果需要手动写动画,你认为最小的事件间隔是多久?
 > 多数显示器的频率是60HZ,就是说一秒刷新60,那么最短的间隔就是`1/60*1000 = 16.7ms`
 
-## overflow:scroll在IOS上滑动不流畅的解决办法
+## 6.5 overflow:scroll在IOS上滑动不流畅的解决办法
 > 加上`-webkit-overflow-scrolling:touch`
 
 
 
-## 移动端禁止选中内容
+## 6.6 移动端禁止选中内容
 
 > 如果你不想用户可以选中页面中的内容，那么你可以在css中禁掉：
 ```css
@@ -448,6 +455,35 @@ input:focus::-webkit-input-placeholder{color:#EEEEEE;}
   -ms-user-select: none;            
 }
 ```
+
+
+
+
+
+
+## 抽离样式模块收藏用
+```css
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend,
+ button, input, textarea, th, td { margin:0; padding:0; }
+        body, button, input, select, textarea { font:12px/1.5tahoma, arial, \5b8b\4f53; }
+        h1, h2, h3, h4, h5, h6{ font-size:100%; }
+        address, cite, dfn, em, var { font-style:normal; }
+        code, kbd, pre, samp { font-family:couriernew, courier, monospace; }
+        small{ font-size:12px; }
+        ul, ol { list-style:none; }
+        a { text-decoration:none; }
+        a:hover { text-decoration:underline; }
+        sup { vertical-align:text-top; }
+        sub{ vertical-align:text-bottom; }
+        legend { color:#000; }
+        fieldset, img { border:0; }
+        button, input, select, textarea { font-size:100%; }
+        table { border-collapse:collapse; border-spacing:0; }
+```
+
+
+
+
 
 # 第二节、flex 详解
 
@@ -572,16 +608,6 @@ item{ flex-basis:<length> | auto}
 
 
 
-## 设置透明三种方式
-### rgba
-- `background:rgba(0,0,0,0.3)` 
-    + **不影响内部内容**
-### opacity
-- `opacity:0.3`
-    + 内部内容也会透明 且IE6/7/8 不支持
-
-### 兼容IE 透明
-> `filter:alpha(opacity=20)`
 
 
 

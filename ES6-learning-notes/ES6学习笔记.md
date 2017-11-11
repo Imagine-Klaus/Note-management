@@ -474,14 +474,48 @@ for (let v of a) {
     Instance.showColor()
 ```
 
-# ES6对象方法学习
+# 十二、ES6对象方法学习
 
-## Object.keys()
+## 12.1 Object.keys()，Object.values()，Object.entries()
+### 12.1.1 Object.keys()
 - 语法: `Object.keys(obj)`
-- 会返回一个由给定对象**自身可枚举属性**组成的数组(由对象键名组成的数组)。数组中属性名的排列顺序与`for...in`循环遍历的一致,`for...in` 还**会枚举其原型链上的属性**
+- 会返回一个由给定对象**自身可枚举属性**的键名。数组中属性名的排列顺序与`for...in`循环遍历的一致,`for...in` 还**会枚举其原型链上的属性**
 - `Object.keys`返回的所有元素都是**字符串**
 ```js
     var obj = { name: 'lulinglong', age: '18' }
     Object.keys(obj)
     //返回结果----->["name", "age"]
 ```
+
+### 12.1.2 Object.values()
+- 语法：`Object.values(obj)`
+- 方法返回一个数组,成员是参数对象自身的所有可遍历属性的值
+```js
+    let obj = { name: 'lulinglong', age: '18' }
+    Object.values(obj)
+    //["lulinglong", "18"]
+```
+
+### 12.1.3 Object.entries()
+- 返回一个数组,成员是参数对象自身所有可遍历属性的键值对数组
+```js
+    let obj = { name: 'lulinglong', age: '18' }
+    Object.entries(obj)
+    //[ ["name", "lulinglong"], ["age", '18'] ]
+```
+
+
+## 12.2 Object.assign()
+`Object.assign`方法用于对象的合并,将源对象的所有可枚举属性**浅拷贝**到目标对象上
+
+- `Object.assign(target, source1, source2)`
+    + 第一个参数是目标对象,后面的都是源对象
+    + 如果合并的属性中有键名相同的，**后面的会覆盖前面的**
+```js
+    let source1 = { name: 'lulu', age: '18' }
+    let source2 = { name: 'lingling', age: '19', gender: 'female' } 
+    let target = Object.assign({}, source1, source2)
+```
+
+- 如果非对象参数出现在**非首参数**的位置上，这些参数都会转成对象，如果无法转就跳过
+    + 如果只有一个参数，`Object.assign`会直接返回该参数。

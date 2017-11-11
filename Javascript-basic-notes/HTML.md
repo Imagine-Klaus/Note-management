@@ -128,6 +128,10 @@
 
     + 2 当引用了JS的时候，浏览器发送1个js request就会一直等待该request的返回。因为浏览器需要1个稳定的DOM树结构，而JS中很有可能有代码直接改变了DOM树结构，比如使用 document.write 或appendChild,甚至是直接使用的location.href进行跳转，浏览器为了防止出现JS修改DOM树，需要重新构建DOM树的情况，所以 就会阻塞其他的下载和呈现. 
 
+### 1.13 XML、XHTML、HTML的区别
+- XML: (Extensible Markup Language) ：可扩展标记语言,被设计用来传输和存储数据,作为数据交换的标准格式，焦点是数据的内容
+- XHTML: (Extensibel + HyperText Markup Language): 可扩展超文本标记语言，XHTML是基于HTML4.0 用XML的规则对其进行了扩展。是HTML向XML的过渡
+- HTML: (HyperText Markup Language): 超文本标记语言，是一种规范，一种标准，被设计用来显示数据
 
 ## 2 HTML基础知识内容
 

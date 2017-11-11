@@ -614,3 +614,700 @@ http.createServer((req, res) => {
     console.log('runing...running')
 })
 ```
+
+
+# 十二 动态网站开发
+
+## 12.1 初步实现 
+- 功能:成绩查询功能
+- 注意点:
+    + 1.**在form表单中的method 和 req.url.method中的请求方式都要**
+    + 2.form表单中的action中填写地址必须写协议名称"http://"之类
+```js
+const path = require('path')
+const http = require('http')
+const fs = require('fs')
+const querystring = require('querystring')
+// 引入配置好的数据json文件
+const scoreData = require('./view/score.json')
+
+http.createServer((req, res) => {
+    if (req.url.startsWith('/query') && req.method == "GET") {
+        fs.readFile(path.join(__dirname, 'view','index.tpl'), 'utf8', (err, content) => {
+            if(err) {
+                res.writeHead(500, {
+                    'Content-Type': 'text/plain; charset=utf8'
+                })
+                res.end('服务器错误,请联系管理员')
+            }
+            res.end(content)
+        })
+    }else if(req.url.startsWith('/score') && req.method == "POST") {    
+            //请求名称"POST", "GET"必须大写 form 表单中也是
+            let pdata = ''
+            req.on('data', (chunk) => {
+                pdata += chunk;
+            })
+            req.on('end', () => {   
+            console.log(123)
+                // 对pdata 进行处理
+                let obj = querystring.parse(pdata)
+                //通过上传的参数去数据中匹配
+                let result = scoreData[obj.code]
+                fs.readFile(path.join(__dirname, 'view', 'result.tpl'), 'utf8', (err, content) => {
+                    if(err) {
+                        res.writeHead(500, {
+                            'Content': 'text/plain; charset=utf8'
+                        })
+                        res.end('服务器错误,请联系管理员')
+                    }
+                    /*将原本内容中的模板字段替换成匹配的数据*/
+                    content = content.replace('%chinese%', result.chinese)
+                    content = content.replace('%math%', result.math)
+                    content = content.replace('%english%', result.english)
+                    content = content.replace('%total%', result.total)
+                    res.end(content)
+                })
+            })
+    }
+}).listen(3000, () => {
+    console.log('running')
+})
+```
+
+## 12.2 配合art-template
+
+### 12.2.1 模板引擎渲染方式
+<h4>第一种</h4>
+> 注意点:<br>
+> 1.dirname拼接的时候注意加/ 如下 `__dirname+ '/mytpl.art'`<br>
+> 2.格式 template(路径,数据) ---> 数据必须是对象格式
+```js   
+let template = require('art-template')
+let html = template(__dirname + '/mytpl.art', {
+    user: {
+        name: 'lulinglong'
+    }
+})
+console.log(html)
+```
+
+<h4>第二种</h4>
+>步骤:<br>
+1.指定模板<br>
+2.将模板编译 `template.compile(tpl)`<br>
+3.往render中传入数据 `render({})` ---> 必须是对象形式的<br>
+
+
+```js   
+let  tpl = '<ul>{{each list as value}}<li>{{value}}</li>{{/each}}</ul>'
+let  render = template.compile(tpl)
+let  result = render({
+    list:['lulinglong', 'wangjie', 'dingding']
+})
+
+``` 
+<h4>第三种</h4>
+>步骤:<br>
+1.直接在template中写各个数据<br>
+2.在模板中直接写数据名
+
+
+```js
+let html = template(__dirname + '/mytpl.art', {
+    chinese: '123',
+    english: '124',
+    math: '125',
+    total: '1111'
+})
+```
+
+# 十三 express使用
+## 13.1 创建服务器功能
+```js
+    //创建express 对象
+    const express = require('express')
+    const app = express()
+
+    //或者
+    const app = require('express') ()
+    // `/`是根路径
+    app.get('/', () => (req, res) => {
+        res.send('ok')
+    }).listen(3000, () => {
+        console.log('running')
+    })
+
+    // 另一种创建方式
+    let server = app.get('', (req, res) => {
+        res.send('ok')
+    })
+
+    server.listen(3000, () => {
+        console.log('runnning')
+    })
+```
+
+## 13.2 静态服务器功能
+- `app.use(express.static)`可以创建多个目录
+```js
+    const express = require('express')
+    const app = express();
+    
+    //use方法的第一个参数可以指定一个虚拟的目录
+    //app.use('/abc', express.static('public'))
+    let server = app.use(express.static('public'))
+    server.listen(3000, () => {
+        console.log('running')
+    })
+```
+- 也可以同时指定多个虚拟目录 ,**同时创建服务**
+```js
+        app.use('/abc', express.static('public'))
+        app.use('/eee', express.static('hello'))
+        app.listen(3000, () => {
+            console.log('running')
+        })
+```
+## 13.3 express的路由功能
+
+- 1.0`app.use((req, res) => {res.send('ok')})` 可以处理所有请求
+- 2.0`app.all('/abc', (req ,res))` 发送的请求与请求方式无关
+    + **use和all的区别**:`all`的话只在**指定路径**请求有用,`use`**全部的路径**都可以有效
+- 3.0`app.route('/abc').get().post`  --> 可以**链式编程**
+```js
+    const express = require('express')
+    const app = express();
+
+    app.get('', (req, res) => {
+        res.send('get data')
+    })
+
+    app.post('', (req, res) => {
+        res.send('get data')
+    })
+    app.put('', (req, res) => {
+        res.send('get data')
+    })
+    app.delete('', (req, res) => {
+        res.send('get data')
+    })
+    
+
+    //或者使用app.use可以处理所有请求
+    app.use((req,res) => {
+        res.send('ok')
+    })
+
+    // all 方法绑定的路由 只和请求路径有关 与请求方式无关
+    app.all('/abc', (req, res) => {
+        res.end('success')
+    })
+
+    //开启服务器
+    app.listen(3000,  () => {
+        console.log('running')
+    })
+
+```
+- router方法可以指定特定的请求方式 
+    + 只支持`get` 和 `post`
+```js
+    app.route('/hello')
+        .get((req, res) => {
+            res.send('get data')
+         }).post((req, res) => {
+            res.send('get data')
+         })
+```
+- 4.0使用Router类文件指定特定的请求方式 
+    + 创建一个router类 **并导出**
+    + 创建一个主文件用于执行 , 需要导入该路由对象
+```js
+const express  = require('express')
+const router = express.Router();
+
+route.get('/hi', (req, res) => {
+    res.send('hi router')
+})
+
+route.get('/hello', (req, res) => {
+    res.send('hello router')
+})
+
+route.post('/dog', (req, res) => {
+    res.send('dog router')
+})
+
+module.exports = router
+```
+```js
+    //router类
+    let birds = require('./birds')
+    //指定虚拟路径
+    app.use('/admin',birds)
+
+    app.listen(3000, () => {
+        console.log('running')
+    })
+```
+
+## 13.4 中间件
+- 本质上就是一个函数
+- `next()`传递到下一个函数
+- 一旦`res.send()`或者是`res.end()`的话就不会向下执行了
+
+
+### 13.4.1 应用级中间件
+
+- 传递的路径必须与上一个一致
+```js   
+    const express = require('express')
+    const app = express();
+    let total = 0
+    app.use('/user', (req, res, next) => {
+        console.log(Date.now())
+        //没有next的话不能向下执行
+        //作用:把请求传递到下一个中间件
+        next()
+    })
+
+    app.use('/user', (req, res, next) => {
+        console.log('访问了/user')
+        next()
+    })
+
+    app.use('/user', (req, res) => {
+        total++;
+        console.log(total)
+        res.send('result')
+    })
+
+    app.listen(3000, () => {
+        console.log('running')
+    })
+```
+### 13.4.2 中间件的挂载方式
+<h4>路由中间件链式挂载</h4>
+
+- `next('route') `: 跳转到下一个路由, 一旦跳转就**不会执行当前路由的剩余部分**
+    + 下个路由的路径**必须与上一个一致**
+```js
+    const express = require('express')
+    const app = express();
+
+    app.get('/abc', (req, res, next) => {
+        console.log(1)
+        next()//必须操作next方式往下传递
+        //next('route')//跳转到下一个路由的话 以下的方法就不执行了
+    }, (req, res) => {
+        console.log(2)
+        res.send('abc')
+        })
+
+    app.get('/abc', (req, res) => {
+        console.log('怎么说')
+        res.send('success failure')
+    })
+    
+    app.listen(3000, () => {
+        console.log('running')
+    })
+```
+
+<h4>使用回调函数数组处理路由</h4>
+```js
+    let cb0 = (req, res, next) => {
+        console.log(1)
+        next()
+    }
+    let cb1 = (req, res, next) => {
+        console.log(2)
+        next()
+    }    
+    let cb2 = (req, res) => {
+        res.send('已经成功了')
+    }
+
+    app.get('/admin', [cb0, cb1, cb2])
+    app.listen(3000, () => {
+        console.log('running')
+    })
+```
+
+### 13.4.2 实际使用
+- 1.导入第三方件: `body-parser'`
+- 2.处理参数:(两个最好都加上)
+    + 处理表单出来的数据: `app.use(bodyParser.uelencoded({ extended: false }))`
+    + 处理ajax传来的数据: `app.use(bodyParser.json())`
+- post请求:依赖第三方件`body-parser`
+    + 获取数据：`req.body`
+- get请求: 不依赖第三方件 
+    + 获取数据: `req.qurey`
+
+```js
+    const express = require('express')
+    const app = express();
+    const bodyParser = require('body-parser')
+
+    //配置静态资源服务器 配置过后可以访问文件夹下所有内容.不需要在url中带上/public
+    app.use(express.static('public'))
+
+    //处理ajax传来的数据
+    app.use(bodyParser.json())
+    //挂载参数处理中间件 处理表单传来的数据  只支持post
+    app.use(bodyParser.uelencoded({ extended: false }))
+    
+    //get参数处理
+    app.get('/login', (req, res) => {
+        let data = req.query;
+        console.log(data)
+        res.send('get data')
+    })
+
+    //post参数的处理 需要第三方的包
+    app.post('/login', (req, res) => {
+        let data = req.body
+        console.log(data)
+        res.send('成功')
+    })
+    app.listen(3000, () => {
+        console.log('在跑了')
+    })
+```
+
+## 13.5 express 配合 art-template
+- 设置模板文件的路径
+    + `app.set('views',路径)`
+- 设置模板引擎
+    + `app.set('view engine', 'art')`
+    + `art`为文件的后缀名
+- 设置无法匹配后缀名情况下的兼容模式
+    + `app.engine('art', require('express-art-template'))`
+```javascript
+    const express = require('express')
+    const path = require('path')
+    const template = require('art-template')
+    const app = express()
+    //设置模板文件的路径
+    app.set('views', path.join(__dirname,'view'));
+    //设置模板引擎
+    app.set('view engine', 'art') //art为后缀名
+    
+    //找到后缀名并解析,与app.set中设置的后缀名一致
+    app.engine('art', require('express-art-template'))
+
+    app.get('/list', (req, res) => {
+        let data = {
+            title: '水果',
+            list: ['apple', 'orange']
+        }
+        //express提供
+        //参数一:模板名称
+        //参数二:渲染模板的数据
+        res.render('list', data)
+    })
+    app.listen(3000, () => {
+        console.log('runnings')
+    })
+```
+
+## 13.6 图书管理系统
+### 13.6.1 图书增删改查操作
+<h4>编辑图书</h4>
+
+```js
+    exports.toEditBook = (req, res) => {
+        let id = req.query.id  //get获取数据
+        let book = null;
+        data.forEach((item) => {
+            //匹配数据中的唯一id的图书信息
+            if(id  == item.id){
+                book = item
+                return; //forEach中没有break
+            }
+        })
+        res.render(editBook,book)
+    }
+```
+
+<h4>修改图书提交表单</h4>
+
+- 需要添加一个隐藏域存储id
+```js
+    exports.editBook = (req, res) => {
+        let info = req.body;
+        data.forEach((item) => {
+            if(item.id == info.id) {
+                for( key in info ) {
+                    item[key] = info[key]
+                }
+            }
+        })
+    } 
+```
+
+<h4>删除图书信息</h4>
+
+```js
+    exports.deleteBook = (req, res) => {
+        let id = req.query.id
+        data.forEach((item, index) => {
+            if(item.id == id){
+                data.splice(index, 1)
+            }
+            return;
+        })
+    }
+```
+
+### 13.6.2 数据库学习
+#### 初始化数据库
+- 1.插入数据
+```js
+    insert into book(name, author, category, description) value (a, b, c, d)
+```
+
+- 2.把data.json文件中的数据拼接成insert语句
+```js   
+    cosnt path = require('path')
+    const fs = require('fs')
+
+    fs.readFile(path.join(__dirname, '../', 'data.json'), 'utf8', (err, content) => {
+        if(err) return
+        let list = JSON.parse(content)
+        let arr = []
+        list.forEach((item) => {
+            let sq; = `insert into book (name, author, category,)`
+        })
+    })  
+```
+
+#### 数据库基本步骤
+- 1.初始化一个package.json文件,下载`npm install mysql`
+-  以下为插入数据
+```js
+    //加载数据库驱动
+    var mysql = require('mysql');
+
+    //创建数据库链接
+    var connection = mysql.createConnection({
+        host: 'localhost',  //数据库所在服务器的域名或者IP地址
+        user: 'root',      //登录数据库的账号
+        password: '',      //登录数据库的密码
+        database: 'lll'    //数据库名称 
+    })
+    
+    执行连接操作
+    connection connect();
+    
+    //插入操作
+    let sql = 'insert into initBOOK set ?'
+    let data = {
+        name: '明朝那些事',
+        author: '当年明月',
+        category: '文学',
+        description: '明朝历史'
+    }
+    connection.query(sql, data, function(err, results, fields) {
+        if(err) throw err;
+        console.log('共有',results[0].total+'条数据库')
+        if(results.affectedRows ==1) {
+            console.log('插入成功')
+        }
+    })
+    connection.end()
+```
+- 2.插入数据
+```js
+    var mysql = require('mysql');
+
+    //创建数据库链接
+    var connection = mysql.createConnection({
+        host: 'localhost',  //数据库所在服务器的域名或者IP地址
+        user: 'root',      //登录数据库的账号
+        password: '',      //登录数据库的密码
+        database: 'lll'    //数据库名称 
+    })
+    
+    执行连接操作
+    connection connect();
+    
+    //插入操作
+    let sql = 'update initBOOK set name=?,author=?,category=?,description=? where id=?';
+    let data = ['浪潮之巅','无菌','计算机','it巨头兴衰']
+    
+    connection.query(sql, data, function(err, results, fields) {
+        if(err) throw err;
+        console.log('共有',results[0].total+'条数据库')
+        if(results.affectedRows == 1) {
+            console.log('更新成功')
+        }
+    })
+    connection.end()
+```
+
+- 3.删除数据
+```js
+    //其他跟上面一样
+    let sql = 'delete from initBOOK where id = ?';
+    let data = [9]; //需要用数组包住
+```
+
+- 4.查询数据
+```js
+    let sql = 'select * from initBOOK'
+    //如果需要特定的值 可以传入值
+    //let sql = 'select * from initBOOK where id = ?'
+    let data = null;
+    connection.query(sql, data, function(err, results, fields){
+        if(err) throw err;
+        console.log(results[1].name)
+    })
+```
+#### 测试通用api
+```js
+
+//封装操作数据库的通用api
+
+const mysql = require('mysql');
+
+exports.base = (sql,data,callback) => {
+    // 创建数据库连接
+    const connection = mysql.createConnection({
+        host: 'localhost', // 数据库所在的服务器的域名或者IP地址
+        user: 'root', // 登录数据库的账号
+        password: '', // 登录数据库的密码
+        database: 'book' // 数据库名称
+    });
+    // 执行连接操作
+    connection.connect();
+
+    // 操作数据库(数据库操作也是异步的)
+    connection.query(sql,data, function(error, results, fields) {
+        if (error) throw error;
+        callback(results);
+    });
+    // 关闭数据库
+    connection.end();
+}
+```
+
+### 13.6.3 登录验证
+
+```js
+    const express = require('express')
+    const bodyParser = require('body-parser')
+    const app = express()
+
+    app.usr(bodyParser.urlencoded({ extended: false }))
+    app.use(express.static('public'))
+
+    app.post('/check',(req, res) => {
+        let param = req.body;
+
+        let sql = 'select count(*) as total from user'
+
+        db.base(sql, data, (result) => {
+            if(result[0].total ==1) {
+                res.send('login success')
+            }else {
+                res.send('login failure')
+            }
+        })
+    })
+    app.listen(3000, () => {
+        console.log('running')
+    })
+```
+
+## 14 接口开发以及Restful api
+### 14.1 json接口
+```js
+    cosnt express = require('express')
+    const db = require('./db.js')
+    const app = express();
+    
+    //指定api路径路径
+    app.get('/allBooks', (req, res) => {
+        let sql = 'select * from initBOOK'
+        db.base(sql, null, (result) => {
+            res.json(result)
+        })
+    })
+
+    app.listen(3000, () => {
+        console.log('running')
+    })
+```
+### 14.2 jsonp接口
+```js
+    cosnt express = require('express')
+    const db = require('./db.js')
+    const app = express();
+    
+    //修改callback函数名称
+    app.set('jsonp callback name', 'cb')
+    //指定api路径路径
+    app.get('/allBooks', (req, res) => {
+        let sql = 'select * from initBOOK'
+        db.base(sql, null, (result) => {
+            res.jsonp(result)
+        })
+    })
+
+    app.listen(3000, () => {
+        console.log('running')
+    })
+```
+
+### 14.3 restful api
+> restful api 是从url的格式来表达的
+
+- 类似如下的url
+- 一个`url`对应一个资源
+- 参数的传递直接用`/`
+```html
+    get http://localhost:3000/books
+    get http://localhost:3000/books/book
+
+    //提交表单
+    post http://localhost:3000/books/book
+
+    //编辑 1 为id值  原本为?id=1
+    get http://localhost:3000/books/book/1
+    
+    //添加
+    put http://localhost:3000/books/book
+    
+    //删除
+     
+    delete http://localhost:3000/books/book/1
+```
+
+```js
+    const express = require('express')
+    const app = express();
+    const db = require('./db.js')
+    //不传参
+    //app.get('/books', (req, res) => {
+    //    let sql = 'select * from book'
+    //    db.base(sql, null, (result) => {
+    //        res.json(result)
+    //    })
+    //})
+    
+    app.get('/books/book/:id' ,(req, res) => {
+        let id = req.params.id;
+        let sql = 'select * from book'
+        let data = [id]
+        db.base(spl, data, (result) => {
+            if(err) throw err
+            res.json(result[0])
+        })
+    })
+
+    app.listen(3000, () => {
+        console.log('running')
+    })
+```

@@ -64,6 +64,7 @@
 ### 1 路由传参第一种
 > 通过在配置路由中绑定参数名` path: '/login/:username'` 然后在`<router-link to="/login/Rose">`**(最后一个/后的数值既为要传递过去的数值)**,然后在目标页通过` $route.params.username(自己定义的参数名)`可以获取到传递过来的值
 
+- `v-bind="{to:'index/value'}"`----拼接
 ```html
 <body>
     <div id="app">
@@ -295,3 +296,18 @@ export default {
 > 这个编程式导航都作用就是跳转，比如我们判断用户名和密码正确时，需要跳转到用户中心页面或者首页，都用到这个编程的方法来操作路由。
 
 
+
+```js
+    router.beforeEach((to,from,next) => {
+        if(to.meta.requiresAuth){
+            if(sessionStorage.getItem('local_key') == null){
+                alert('请先登录...')
+                next({path : '/login'})
+            }else{
+                next();
+            }
+        }else{
+            next();
+        }
+    })
+```
