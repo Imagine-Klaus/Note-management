@@ -48,14 +48,17 @@
     + break-all:允许再单词内换行 
     + keep-all:只能在半角空格或连字符处换行 
 
-- **超出显示省略号效果**
+---------------------------
+
+- 1.0 **超出显示省略号效果**
 ```css
  p{text-overflow:ellipsis;//文本溢出显示省略号;
    overflow:hidden;
    white-space:nowrap;//强制不换行;
    }
 ```
-- **实现第二行超出省略效果**
+- 2.0 **实现第二行超出省略效果**
+  + 目前兼容性不好,仅仅支持webkit浏览器和移动端
 ```css
     p{
       display:-webkit-box;
@@ -178,7 +181,7 @@
 
 > ul设置为`font-size:0`(chrome不支持，因为chrome小于12px按12px处理)，可以用`letter-spacing:-3px` 处理
 
-## visibility
+## 3.5 visibility
 - visibility中`collapse`的作用:
 
 > 当在表格元素中使用的时候，这个值可以删除一行或一列。*但是不会影响布局*,被行或者列占据的空间会留给其他元素时候。<br/>     
@@ -218,7 +221,7 @@
 
 
 
-# 五、CSS能够实现的那些效果
+# 第五节、CSS能够实现的那些效果
 ## 5.1 CSS三角的写法
 ```css
     div {
@@ -411,7 +414,7 @@
 </html>
 ```
 
-六、一些实际场景中的问题
+# 第六节、一些实际场景中的问题
 ## 6.1 解决在chrome浏览器下表单自动填充后背景色为黄色的问题:
 ```css
 input:-webkit-autofill{
@@ -425,11 +428,11 @@ input:-webkit-autofill{
 ## 6.2 chrome浏览器css字体大小小于12px无效的解决办法
 > 设置body为`webkit-text-size-adjust`
 
-## webkit表单元素的默认外观怎么重置
+## 6.3 webkit表单元素的默认外观怎么重置
 
 > `.css{-webkit-appearance:none;}`
 
-## 6.3 webkit表单输入框placeholder的颜色值改变 (安卓不行)
+## 6.4 webkit表单输入框placeholder的颜色值改变 (安卓不行)
 
 ```css
 input::-webkit-input-placeholder{color:#AAAAAA;}
@@ -437,10 +440,10 @@ input:focus::-webkit-input-placeholder{color:#EEEEEE;}
 
 ```
 
-## 6.4 如果需要手动写动画,你认为最小的事件间隔是多久?
+## 6.5 如果需要手动写动画,你认为最小的事件间隔是多久?
 > 多数显示器的频率是60HZ,就是说一秒刷新60,那么最短的间隔就是`1/60*1000 = 16.7ms`
 
-## 6.5 overflow:scroll在IOS上滑动不流畅的解决办法
+## 6.6 overflow:scroll在IOS上滑动不流畅的解决办法
 > 加上`-webkit-overflow-scrolling:touch`
 
 
@@ -456,6 +459,19 @@ input:focus::-webkit-input-placeholder{color:#EEEEEE;}
 }
 ```
 
+## 6.7 什么是Css Hack,ie6,7,8 的hack 分别是什么？
+- 答案：针对不同的浏览器写不同的 CSS code 的过程，就是 CSS hack。
+示例如下：
+#test{
+background-color:yellow; /*ie8*/
++background-color:pink; /*ie7*/
+_background-color:orange; /*ie6*/
+
+## 6.8 css 中可以让文字在垂直和水平方向上重叠的两个属性是什么？
+- 垂直方向：line-height
+- 水平方向：letter-spacing
+- 那么问题来了，关于 letter-spacing 的妙用知道有哪些么？
+  + 答案:可以用于消除**`inline-block`元素间的换行符空格间隙问题**
 
 
 
@@ -485,10 +501,11 @@ body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, fo
 
 
 
-# 第二节、flex 详解
+# 第七节、flex 详解
+
+- 兼容性, IE10以上才支持,必要时可以使用`autoprefixer`补充前缀
 
 >  设为`flex`布局的盒子 子元素的`float`,`clear`,`vertical-align`将失效
-
 ## 1 容器的属性
 
 ```
@@ -509,7 +526,7 @@ body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, fo
 }
 ```  
 --------------
-![](./imgs/flex-direction.png)
+![](../imgs/flex-direction.png)
 
 > row:
 > 主轴水平方向**从左向右**排列
@@ -578,7 +595,7 @@ body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, fo
  .item{order:1}
 
 ```
-![](./imgs/order.png)
+![](../imgs/order.png)
 
 ### 2.2 flex-grow属性
 > 定义元素的放大比例,默认为**0** <br/>

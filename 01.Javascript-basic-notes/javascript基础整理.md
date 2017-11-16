@@ -100,9 +100,25 @@ for (initialization; expression; post-loop-expression)｛
 ### 3.1.1 charAt()
 - `charAt(x)` ：返回指定位置的字符串
 ```js
+  var o = {};
+for (var i = 0; i < str.length; i ++) {
+    var item = str.charAt(i);
+    if (o[item]) {
+        o[item] ++; //如果以前有了值，让这个值加一
+    }else {
+        o[item] = 1; //如果之前没有，现在进来就有了一次了
+    }
+}
+for (var key in o) {
+    console.log(key+"出现了" + o[key] + "次");
+}
+```
+
+```js
 var str  = "1234567"
 console.log(str.charAt(2))  ---->返回 "3"
 ```
+
 ### 2.1.2 substring()、substr()、slice()
 > 三者功能相似,*都可以省略第二个参数*,其中参数缺略有不同
 - substring(start,end) 
@@ -121,8 +137,18 @@ console.log(str.charAt(2))  ---->返回 "3"
 ### 2.1.4 trim()
 - `trim()`方法可以去掉两端的空格,不影响原来的字符串
 
-### 2.1.5 indexOf()
+### 2.1.5 indexOf(searchvalue,fromindex)
 - `indexOf()`方法能够返回指定元素在数组/字符串中的位置 **如果没有,则返回-1** (在数组去重中引用较多)
+-  第二个参数可选,即从哪个索引开始检索
+```js
+    //寻找重复字符的位置
+    var str = 'lulinglong'
+    var index = -1 ;
+    do{
+        index = index.indexOf('l', index+1)
+        console.log(index)
+    }while(index != -1)
+```
 
 ### 2.1.6 split(separator,howmany)
 - 参数separator:字符串或者是正则表达式
@@ -231,6 +257,8 @@ console.log(arr3) ---->[13,'爱你','小丽',123,'想你','Lily']
 - `slice(start,end)` 从已有的数组中返回选定的元素 **不会修改原来的数组,只是返回一段从中截取的数组**
     + start:必选 指定从何处开始选取
     + end :可选 规定从何处结束选取
+- 当`slice()`传入负数的话,会将负数与字符串相加
+    + slice(1,-2): 假如'lulinglong' 那么从第一个开始截取到(str.length-2)个下标的字符
 ```js
 var arr = [3,4,5,7,1]
 console.log(arr.slice(0,1)) --->返回[3]
