@@ -1,3 +1,4 @@
+[TOC]
 # 移动端 
 
 ##  1.使用MUI的时候
@@ -17,11 +18,11 @@ window.addEventListener('touchmove', func, { passive: false })
 
 ## 2.META相关
 
-### 添加到主屏后的标题（IOS）
+### 2.1 添加到主屏后的标题（IOS）
 
 > <meta name="apple-mobile-web-app-title" content="标题"> 
 
-### 启用 WebApp 全屏模式（IOS）
+### 2.2 启用 WebApp 全屏模式（IOS）
 
 > 当网站添加到主屏幕后再点击进行启动时，可隐藏地址栏（从浏览器跳转或输入链接进入并没有此效果）
 ```html
@@ -30,12 +31,13 @@ window.addEventListener('touchmove', func, { passive: false })
 <meta name="apple-touch-fullscreen" content="yes" /> 
 <!--more-->
 ```
-###  百度禁止转码
+
+### 3.3 百度禁止转码
 
 > 通过百度手机打开网页时，百度可能会对你的网页进行转码，往你页面贴上它的广告，非常之恶心。不过我们可以通过这个meta标签来禁止它：<br>
 `<meta http-equiv="Cache-Control" content="no-siteapp" />`
 
-### 设置状态栏的背景颜色（IOS）
+### 3.4 设置状态栏的背景颜色（IOS）
 
 > 设置状态栏的背景颜色，只有在 "apple-mobile-web-app-capable" content="yes" 时生效
 
@@ -48,7 +50,7 @@ window.addEventListener('touchmove', func, { passive: false })
 `black` ：状态栏背景是黑色。<br>
 `black-translucent `：状态栏背景是半透明。 如果设置为 `default` 或 `black`,网页内容从状态栏底部开始。 如果设置为 `black-translucent `,网页内容充满整个屏幕，顶部会被状态栏遮挡。
 
-### 移动端手机号码识别（IOS）
+### 3.5 移动端手机号码识别（IOS）
 > 在 iOS Safari （其他浏览器和Android均不会）上会对那些看起来像是电话号码的数字处理为电话链接，比如：
 7位数字，形如：1234567 <br>
 带括号及加号的数字，形如：(+86)123456789<br>
@@ -65,23 +67,23 @@ window.addEventListener('touchmove', func, { passive: false })
 <a href="sms:123456">123456</a> 
 ```
 
-### 移动端邮箱识别（Android）
+### 3.6 移动端邮箱识别（Android）
 
 >与电话号码的识别一样，在安卓上会对符合邮箱格式的字符串进行识别，我们可以通过如下的meta来管别邮箱的自动识别：<br>
 `<meta content="email=no" name="format-detection" />`<br> 
 同样地，我们也可以通过标签属性来开启长按邮箱地址弹出邮件发送的功能：<br>
 `<a mailto:dooyoe@gmail.com">dooyoe@gmail.com</a>`
 
-## 添加智能 App 广告条 Smart App Banner（IOS 6+ Safari）
+## 3.7 添加智能 App 广告条 Smart App Banner（IOS 6+ Safari）
 
 `<meta name="apple-itunes-app" content="app-id=myAppStoreID, affiliate-data=myAffiliateData, app-argument=myURL">`
 
 
-### 优先使用最新版本 IE 和 Chrome
+### 3.8 优先使用最新版本 IE 和 Chrome
 
 > `<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /> `
 
-### viewport模板
+### 3.9 viewport模板
 
 ```html
 <!DOCTYPE html>
@@ -101,14 +103,14 @@ window.addEventListener('touchmove', func, { passive: false })
 </body>
 </html>
 ```
-### winphone系统a、input标签被点击时产生的半透明灰色背景怎么去掉
+### 3.10 winphone系统a、input标签被点击时产生的半透明灰色背景怎么去掉
 
 ```css
 <meta name="msapplication-tap-highlight" content="no">
 ```
 
 
-## 移动端如何定义字体font-family
+## 4. 移动端如何定义字体font-family
 
 - 三大手机系统的字体：
 
@@ -137,7 +139,7 @@ body{font-family:Helvetica;}
 ```
 
 
-## 移动端touch事件(区分webkit 和 winphone)
+## 5. 移动端touch事件(区分webkit 和 winphone)
 
 > 当用户手指放在移动设备在屏幕上滑动会触发的touch事件
 移动设备上的web网页是有300ms延迟的，玩玩会造成按钮点击延迟甚至是点击失效。
@@ -147,12 +149,12 @@ body{font-family:Helvetica;}
 >1.fastclick可以解决在手机上点击事件的300ms延迟 <br>
 zepto的touch模块，tap事件也是为了解决在click的延迟问题 <br>
 
-### 网友遇到过问题的问题借用
+### 6.1 网友遇到过问题的问题借用
 
 > 我一想就用原生的select来解决，效果也是挺不错的，然而，在iphone上，轻触select的时候select会出现闪退的现,<a href=" http://youtu.be/0J_RNTMzHyQ ">youtube链接</a> <br/>
 解决办法就是在**修改Fastclick的源码**，**判断点击目标的类型如果是select的话，就return，不用再去经过fastclick的逻辑**
 
-## ios系统中元素被触摸时产生的半透明灰色遮罩怎么去掉
+## 7. ios系统中元素被触摸时产生的半透明灰色遮罩怎么去掉
 
 > 问题描述：ios用户点击一个链接，会出现一个半透明灰色遮罩, 如果想要禁用，可设置-webkit-tap-highlight-color的alpha值为0，也就是属性值的最后一位设置为0就可以去除半透明灰色遮罩
 ```css
@@ -160,7 +162,7 @@ a,button,input,textarea{-webkit-tap-highlight-color: rgba(0,0,0,0);}
 
 ```
 
-## 部分android系统中元素被点击时产生的边框怎么去掉
+## 8. 部分android系统中元素被点击时产生的边框怎么去掉
 
 > **android**用户点击一个链接，会出现**一个边框或者半透明灰色遮罩**, 不同生产商定义出来额效果不一样，可设置`-webkit-tap-highlight-color`的`alpha`值为`0`去除部分机器自带的效果
 
@@ -173,11 +175,11 @@ a,button,input,textarea{
 ```
 
 
-## webkit表单元素的默认外观怎么重置
+## 9. webkit表单元素的默认外观怎么重置
 
 > `.css{-webkit-appearance:none;}`
 
-## webkit表单输入框placeholder的颜色值能改变么
+## 10. webkit表单输入框placeholder的颜色值能改变么
 ```css
 
 input::-webkit-input-placeholder{color:#AAAAAA;}
@@ -186,17 +188,17 @@ input:focus::-webkit-input-placeholder{color:#EEEEEE;}
 ```
 
 
-## 关闭iOS键盘首字母自动大写
+## 11. 关闭iOS键盘首字母自动大写
 
 > 在iOS中，默认情况下键盘是开启首字母大写的功能的，如果启用这个功能，可以这样：<br>
 `<input type="text" autocapitalize="off" />`
 
-## 关闭iOS输入自动修正
+## 12. 关闭iOS输入自动修正
 
 > 和英文输入默认自动首字母大写那样，IOS还做了一个功能，默认输入法**会开启自动修正输入内容**，这样的话，用户经常要操作两次。如果不希望开启此功能，我们可以**通过input标签属性来关闭掉：** <br>
 `<input type="text" autocorrect="off" /> `
 
-## 禁止文本缩放
+## 13. 禁止文本缩放
 
 >当移动设备横竖屏切换时，文本的大小会重新计算，进行相应的缩放，当我们不需要这种情况时，可以选择禁止：
 ```html
@@ -208,7 +210,7 @@ html {
 ```
 - 注意：必须设置 `meta viewport`。
 
-## 移动端如何清除输入框内阴影
+## 14. 移动端如何清除输入框内阴影
 > 在iOS上，输入框默认有内部阴影，但无法使用 box-shadow 来清除，如果不需要阴影，可以这样关闭：
 ```css
 input,
@@ -218,11 +220,11 @@ textarea {
 }
 ```
 
-## 如何禁止保存或拷贝图像（IOS）
+## 15. 如何禁止保存或拷贝图像（IOS）
 
 > `img { -webkit-touch-callout: none; }`
 
-## 屏幕旋转的事件和样式
+## 16. 屏幕旋转的事件和样式
 
 <h4>事件:</h4>
 >`window.orientation`，取值：正负90表示横屏模式、0和180表现为竖屏模式；
@@ -253,7 +255,7 @@ window.onorientationchange = function(){
 }
 ```
 
-## audio元素和video元素在ios和andriod中无法自动播放
+## 17. audio元素和video元素在ios和andriod中无法自动播放
 
 - 应对方案：**触屏即播**
 ```javascript
@@ -262,7 +264,7 @@ $('html').one('touchstart',function(){
 })
 ```
 
-## 手机拍照和上传图片
+## 18. 手机拍照和上传图片
 
 ```html
 <input type="file">的accept 属性
@@ -279,7 +281,7 @@ input控件默认外观丑陋
 
 ```
 
-##  消除transition闪屏
+##  19. 消除transition闪屏
 
 ```css
 .css{
@@ -290,7 +292,7 @@ input控件默认外观丑陋
 }
 ```
 
-## 保证动画流畅性
+## 20. 保证动画流畅性
 
 > 设计高性能CSS3动画的几个要素
 尽**可能地使用合成属性transform和opacity来设计CSS3动画**，
@@ -306,10 +308,17 @@ input控件默认外观丑陋
 
 ```
 
-## android 上去掉语音输入按钮
+## 21. android 上去掉语音输入按钮
 
 > `input::-webkit-input-speech-button {display: none}`
 
+
+## 22. Retina屏幕1px 边框的问题
+```css
+      Element {
+          border-width: thin
+      }
+```
 
 # PC端
 

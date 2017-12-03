@@ -1,12 +1,12 @@
 # axios 拓展
 
-#### 1、简介
+## 1、简介
 
 - `Axios`是基于`promise`的`HTTP`库，可以用于浏览器和 node.js 的服务器端通信。
 
 - 官网： [axios](https://github.com/axios/axios)
 
-#### 2、使用方式：
+## 2、使用方式：
 
 - `script` 导入： `<script src="https://unpkg.com/axios/dist/axios.min.js"></script>` 
 - `npm` 安装：`npm install axios` `npm install vue-axios`
@@ -14,11 +14,11 @@
 - `Vue.use(VueAxios,Axios)`;
     
 
-#### 3、注意点：
+## 3、注意点：
 
 - **`axios` 不支持跨域请求数据**
 
-#### 4、Vue 中使用方法
+## 4、Vue 中使用方法
 
 - ** 与vue-resource 类似*
 
@@ -30,7 +30,7 @@
         })
 ```
 
-#### 5、使用方法：
+## 5、使用方法：
 
 - 第一种使用方法：
 

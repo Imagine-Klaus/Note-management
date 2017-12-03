@@ -837,15 +837,23 @@ new Vue({
 > 如上图所见 一个vue对象创建后到销毁会有一系列的事件,从开始创建、初始化数据、编译模板、挂载Dom、渲染->更新->渲染、卸载等一系列过程
 
 <h4>1.beforeCreate</h4>
+
+- 此时若打印`data`中的值将会是`undefined`
 > 在实例初始化后，数据观测(data observe)和event/watched事件之前被调用。
 
 <h4>2.created</h4>
+
+- 此阶段`data`内的属性已经可见
 > 实例已经创建完了之后被调用,在这一步,实例已经完成了配置:数据观测(data observere),属性和方法的运算,watch/event 事件的回调。然而 **挂载阶段还没有开始**,$el属性目前不可见 **补充:$el是vm的el属性所指向的DOM节点**
 
 <h4>3.beforeMount</h4>
+
+- 完成了`data`和`el`的初始化,**此时{{message}}**还在占着坑(作为Virtual Dom),数据还没有被替换
 > 在挂载之前被调用，相关的render首次被调用
 
 <h4>4.mounted</h4>
+
+- 此时虚拟DOM被替换为真实dom,完成挂载
 > el 被创建的vm.$el替换,并挂载到实例上去后调用该钩子
 
 - 不会保证所有的子组件都被挂载,如果希望整个视图都渲染完毕,那么需要加上`this.$nextTick`替换掉mounted

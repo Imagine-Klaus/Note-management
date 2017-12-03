@@ -297,6 +297,12 @@ export default {
 
 
 
+## 导航守卫
+- 主要用来跳转或者取消的方式守卫导航
+- **方法**: `router.beforeEach`
+    + 接受参数 to , from , **next**
+    + next()方法必须调用
+
 ```js
     router.beforeEach((to,from,next) => {
         if(to.meta.requiresAuth){

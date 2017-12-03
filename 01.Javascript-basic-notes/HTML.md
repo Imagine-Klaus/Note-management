@@ -7,13 +7,13 @@
 <a href="http://www.cnblogs.com/xianyulaodi/p/6547807.html">链接跳转</a>
 > 1.HTTP请求发送,通过DNS查询IP,这一步包括 DNS 具体的查找过程，包括：浏览器缓存->系统缓存->路由器缓存...,通过Socket发送数据(建立网络通信至少需要一对**端口号**)。<br/>
 > 2.浏览器给web服务器发送一个HTTP请求<br/>
-> 3.服务器的永久重定向相应<br/>
+> 3.服务器的永久重定向响应<br/>
 > 4.浏览器跟踪重定向地址<br/>
 > 5.服务器处理请求<br/>
 > 6.服务器返回一个HTTP响应<br/>
 > 7.浏览器显示HTML    <br/>
 > 8.浏览器发送请求获取嵌入在HTML中的资源(如图片,等等)<br/>
-> 9.浏览器发送异步0请求<br/>
+> 9.浏览器发送异步请求<br/>
 
 
 
@@ -195,61 +195,4 @@
 > alt通常用于 `img`  `input` 元素中，**当无法给用户显示图片的时候的替代文字**
 
 
-## 3 关于meta标签
 
-### 3.1 meta标签解析
-```html
-        <meta charset="UTF-8">
-        <!-- 指定字符编码 "UTF-8" -->
-        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,minimal-ui" />
-        <!-- 视图窗口,移动端特属标签, 其中minimal-ui 意为在网站加载时默认加载地址栏和导航栏 -->
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <!-- X-UA-Compatible : 设置浏览器优先使用什么模式渲染页面
-             content="IE=edge,chrome=1" 优先使用最新的IE和chrome来渲染
-        -->
-        <meta name="renderer" content="webkit" />
-        <!--默认使用 webkit 内核: safari chrome  安卓默认浏览器
-        取值:
-                content="webkit" 采用webkit内核(360极速模式)
-                content="ie-comp" 采用IE兼容内核
-                content="ie-stand" 采用IE标准内核
-        -->
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <!-- 网站开启对web app 程序的支持(隐藏苹果工具栏和菜单栏)
-        取值:
-                content="yes"   伪装成app 
-                content="no"    显示工具栏和菜单栏
-         -->
-        <meta name="apple-mobie-web-app-status-bar-style" content="black">
-        <!-- 当启动webapp功能时,显示手机信号 时间 电池的顶部导航栏颜色
-        取值：
-                content="defult" 白色
-                content="black"  黑色
-                content="black-translucent" 灰色半透明
-         -->
-        <meta name="apple-touch-full-screen" content="yes">
-        <meta name="screen-orientation" content="portrait" />
-        <!-- uc强制竖屏-->
-        <meta name="format-detection" content="telephone=no" />
-        <!-- 格式检测
-        取值:
-                content="telephone=no"  忽略将页面中的数字识别为电话号码
-                content="telephone=yes" 启动电话功能
-         -->
-        <meta name="format-detection" content="email=no" />
-        <!-- 格式检测: 忽略识别邮箱-->
-        <meta http-equiv="Cache-Control" content="no-siteapp" />
-        <!-- http-equiv="Cache-Control" content="no-siteapp"
-        作用：
-                防止百度转码
-         -->
-        <meta name="x5-orientation" content="portrait" />
-        <!-- QQ强制竖屏 -->
-        <meta name="full-screen" content="yes" />
-        <!-- UC强制全屏 -->
-        <meta name="keywords" content="机器猫商城" />
-        <!-- 关键字 -->
-        <meta name="description" content="机0" />
-        <!-- 描述信息 -->
-```
-	

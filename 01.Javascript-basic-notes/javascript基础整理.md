@@ -1,7 +1,7 @@
 [TOC]
 # 1.基础知识补充
 ## 1.1 类型转换
-### 1.1. 1转换成字符串
+### 1.1.1 转换成字符串
 - String(值) --->什么类型的数据都能转
 - x.toString() --->不能转null和undefined
 - 值+""   --->隐式转换 
@@ -121,13 +121,14 @@ console.log(str.charAt(2))  ---->返回 "3"
 
 ### 2.1.2 substring()、substr()、slice()
 > 三者功能相似,*都可以省略第二个参数*,其中参数缺略有不同
-- substring(start,end) 
+
+- substring[start,end) 
     + start:开始位置
     + end:结束位置
 - substr(start,length)
     + start(开始位置)
     + length(要截取的长度)
-- slice(start,end)
+- slice[start,end)
     + start:开始位置
     + end:结束位置
     
@@ -227,7 +228,7 @@ var arr = [1,4,2,5,67];
 arr.sort(function(a,b){
     return a-b; 
 }
-/* 输出正序排列 */
+/* 输出正序排列从小到大 */
 
 
 var arr = [1,4,2,5,67];
@@ -509,8 +510,28 @@ console.log(arr)
   }
   console.log(arr)
 ```
+## 4.4 实现一个快速排序
+```js
+    var  myQuery = {
+        quickSort: function ( arr ) {
+            let midIndex = Math.floor(arr.length/2),
+            midValue = arr.splice(midIndex, 1),
+            left = [],
+            right = []
 
-## 4.4 getFibonacci(month),得到兔子数列对应的值。 1 1 2 3 5 8 13 。。。。。
+            arr.forEach( (item, index) => {
+                if(item < midValue) {
+                    left.push(item)
+                } else {
+                    right.push(item)
+                } 
+            } )
+            return left.concat(midValue, right)
+        }
+    }
+```
+
+## 4.5 getFibonacci(month),得到兔子数列对应的值。 1 1 2 3 5 8 13 。。。。。
 ```js
  function getFibonacci(num){
      if(num==1 || num==2){
@@ -522,7 +543,7 @@ console.log(arr)
  getFibonacci(12)
 ```
 
-## 4.5 求回文数 "1234321" 类似这样的  1~10000
+## 4.6 求回文数 "1234321" 类似这样的  1~10000
 ```js
     /* 将传入的数字一个个拆分 */
     function resolve(num){
@@ -556,7 +577,7 @@ console.log(arr)
     }
 ```
 
-## 统计每个数组出现的次数  ！！！important
+## 4.7 统计每个数组出现的次数  ！！！important
 > 设定空对象,对数组进行遍历,将数组中的每一项作为obj中的键来存储次数,判断如果存在则+1,不存在则设为1
 ```js
 var arr = [1,2,3,4,5,4,3,2,6,7,5,5]
@@ -572,9 +593,48 @@ for (var i = 0; i < arr.length; i++) {
 for(k in obj){
     console.log(k+"一共出现了"+obj[k])
 }
+
+//统计其中的出现次数最多的元素
+var max = 0;
+    var maxItem = null;
+    for( var k in obj) {
+        if(max < obj[k]) {
+            max = obj[k];
+            maxItem = k 
+        } 
+   }
+   console.log(maxItem +'最大'+max)
+```
+## 4.8 求遍历二维数组的多种方法
+
+<h3>第一种 双重for循环</h3>
+
+```js
+    var arr = [[1,2,3],[4,5,6],[7,8]]
+    var arrDemo = [];
+    for(var i = 0; i < arr.length; i++) {
+        for(var j = 0; j < arr[i].length; j++) {
+            arrDemo.push(arr[i][j])
+        }
+    }
 ```
 
+<h3>第二种 利用reduce</h3>
 
+```js
+    var arr = [[1,2,3],[4,5,6],[7,8]]
+    arr.reduce(function(a, b) { 
+        return a.concat(b)
+    })    
+```
+
+<h3>第三种 利用apply 和 concat</h3>
+
+```js
+    var arr = [[1,2,3],[4,5,6],[7,8]]
+    Array.prototype.concat.apply([], arr)
+```
+> arr作为apply方法的第二个参数位,是作为参数被传递进去,数组中的每一个元素会被作为参数传入到concat中被[]调用, 相当于`[].concat([1,2,3],[4,5,6],[7,8])`
 
 
 

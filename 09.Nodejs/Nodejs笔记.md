@@ -549,9 +549,10 @@ http.createServer((req, res) => {
     console.log(obj.username)
 ```
 ### 启动服务器模拟post
-```js
+
 - `req.on('data',(chunk)){pdata+=chunk}`:逐块加载资源块
 - `req.on('end')`:结束加载事件
+```js
 const querystring = require('querystring')
 const http = require('http')
 
